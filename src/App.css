@@ -1,0 +1,14 @@
+*{
+    font-family: 'Montserrat', sans-serif;
+}
+.judul{
+    margin-top: 100px;
+}
+.kepalaTabel{
+    color: white;
+    text-align: center;
+}
+
+.menu:hover{
+    color: blue;
+}
