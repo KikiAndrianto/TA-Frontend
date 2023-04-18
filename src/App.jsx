@@ -7,9 +7,9 @@ import Anak from './Pages/Anak'
 import Petugas from './Pages/Petugas'
 import Footer from './components/Footer'
 import Penimbangan from './Pages/Penimbangan'
+import EditOrtu from './components/EditOrtu'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
@@ -20,6 +20,7 @@ function App() {
       <Route path='/anak' element={<Anak />}/>
       <Route path='/petugas' element={<Petugas />}/>
       <Route path='/penimbangan' element={<Penimbangan />}/>
+      <Route path='orangtua/editOrtu/:id' element={<EditOrtu />}/>
     </Routes>
     {/* <Footer /> */}
     </>

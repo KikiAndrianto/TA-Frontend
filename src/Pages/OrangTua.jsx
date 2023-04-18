@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import '../App.css'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, Link} from 'react-router-dom'
 import axios from 'axios'
 import { AiOutlineEdit} from "react-icons/ai";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -14,7 +14,7 @@ const OrangTua = () => {
     const [nikAyah, setnikAyah] = useState("");
     const [alamat, setAlamat] = useState("");
     const [notlp, setNotlp] = useState("");
-    const Navigate = useNavigate();
+
     // untuk tabel
     const [ortus, setOrtus] = useState([]);
     const [ortu, setOrtu] = useState([]);
@@ -22,7 +22,6 @@ const OrangTua = () => {
     // menampung id dari button edit
     const [id, setId] = useState();
 
-    // console.log(id);
 
     const saveOrtu = async (e) => {
       e.preventDefault();
@@ -69,22 +68,22 @@ const OrangTua = () => {
     }
 
     //untuk ambil data ortu byID
-    const getOrtuById = async () => {
-        axios.get(`http://localhost:3000/ortu/${id}`)
-        .then((result) => {
-            setOrtu(result.data)
-            setnamaIbu(ortu.data.namaIbu);
-            setnikIbu(ortu.data.nikIbu);
-            setnamaAyah(ortu.data.namaAyah);
-            setnikAyah(ortu.data.nikAyah);
-            setAlamat(ortu.data.alamat);
-            setNotlp(ortu.data.notlp);
-        }).catch((err) => {
-            console.log(err);
-        });
-        
-    }
-
+    // const getOrtuById = async () => {
+    //     axios.get(`http://localhost:3000/ortu/${id}`)
+    //     .then((result) => {
+    //         setOrtu(result.data)
+    //         setnamaIbu(ortu.data.namaIbu);
+    //         setnikIbu(ortu.data.nikIbu);
+    //         setnamaAyah(ortu.data.namaAyah);
+    //         setnikAyah(ortu.data.nikAyah);
+    //         setAlamat(ortu.data.alamat);
+    //         setNotlp(ortu.data.notlp);
+    //     }).catch((err) => {
+    //         console.log(err);
+    //     });       
+    // }
+    
+    
   return (
     <>
         <h2 className='judul fw-bolder ms-4'>Form dan Data Orang Tua</h2>
@@ -147,8 +146,8 @@ const OrangTua = () => {
                     <th className='small'>{ortu.alamat}</th>
                     <th className='small'>{ortu.notlp}</th>
                     <th className='small'>
-                            <button onMouseEnter={() => {setId(ortu.id)}} onClick={getOrtuById}  className='button is-small is-info mr-2 bg-success'><AiOutlineEdit /></button>
-                            <button onClick={() => deleteOrtu (ortu.id)} className='button mt-1 is-small bg-danger'><RiDeleteBin6Line /></button>
+                    <Link to={`editOrtu/${ortu.id}`} className='tombol-edit button is-small is-info mr-2'><AiOutlineEdit /></Link>
+                            <button onClick={() => deleteOrtu (ortu.id)} className='button mt-2 text-white is-small bg-danger'><RiDeleteBin6Line /></button>
                         </th>
                     </tr>
                     )

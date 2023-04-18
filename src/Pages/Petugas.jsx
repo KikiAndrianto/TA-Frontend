@@ -33,7 +33,7 @@ const Petugas = () => {
 
   useEffect(() => {
     getPetugas();
-  })
+  },[])
 
   const getPetugas = () => {
     axios.get('http://localhost:3000/petugas')
@@ -96,14 +96,14 @@ const deletePetugas = async (id) => {
             <th className='small'>Jabatan</th>
             <th className='small'>Tugas</th>
             <th className='small'>No HP</th>
-            <th className='small'>Action</th>
+            <th className='small'>Aksi</th>
             </tr>
         </thead>
         <tbody>
           {
             petugass.map((petugas, index) => {
               return (
-                <tr>
+                <tr key={petugas.id}>
             <th>{index + 1}</th>
             <th>{petugas.nama}</th>
             <th>{petugas.alamat}</th>

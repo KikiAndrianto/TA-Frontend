@@ -10,7 +10,7 @@ const Penimbangan = () => {
           <div className='form ms-3 col-md-4'>
             <form >
                 <div className="mb-2 mt-3">
-                <label  className="form-label">Nama Ibu</label>
+                <label  className="form-label">Nama Anak</label>
                 <input type="text" className="form-control" />
                 </div>
                 <div className="mb-2">
