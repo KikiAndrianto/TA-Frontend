@@ -14,7 +14,7 @@ const Home = () => {
             <button className='btn btn-primary shadow home'>Mulai</button>
         </div>
         <div className='col'>
-          <img className='gambar mt-5' src="https://img.freepik.com/free-vector/family-doctor-abstract-concept-vector-illustration-visit-your-doctor-medical-family-practice-primary-healthcare-provider-general-practitioner-physician-service-insurance-abstract-metaphor_335657-1545.jpg?size=626&ext=jpg&ga=GA1.1.1494516282.1662466194&semt=sph"
+          <img className='gambar mt-4' src="https://img.freepik.com/free-vector/family-doctor-abstract-concept-vector-illustration-visit-your-doctor-medical-family-practice-primary-healthcare-provider-general-practitioner-physician-service-insurance-abstract-metaphor_335657-1545.jpg?size=626&ext=jpg&ga=GA1.1.1494516282.1662466194&semt=sph"
            alt="" />
         </div>
       </div>

@@ -67,9 +67,9 @@ const Navbar = () => {
                     </Link>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <Link className="dropdown-item" to={'/imunisasi'}>
                       Data Imunisasi
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </li>

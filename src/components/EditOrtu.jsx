@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom';
 
+
 const EditOrtu = () => {
     const [namaIbu, setnamaIbu] = useState("");
     const [nikIbu, setnikIbu] = useState("");
@@ -10,18 +11,20 @@ const EditOrtu = () => {
     const [alamat, setAlamat] = useState("");
     const [notlp, setNotlp] = useState("");
 
+    const [ortu, setOrtu] = useState([])
+
     const {id} = useParams();
 
     const Navigate = useNavigate();
 
     useEffect(() => {
-        // getOrtuById();
+        getOrtuById();
     },[])  
 
     const updateOrtu = async (e) => {
         e.preventDefault();
         try {
-            await axios.patch(`http://localhost:3000/ortu/${id}`, {
+            await axios.put(`http://localhost:3000/ortu/${id}`, {
                 namaIbu,
                 nikIbu,
                 namaAyah,
@@ -29,26 +32,22 @@ const EditOrtu = () => {
                 alamat,
                 notlp,
             });
-            Navigate("/");
+            Navigate("/orangtua");
+            
         } catch (error) {
             console.log(error);
         }
     };
 
-    // const getOrtuById = async () => {
-    //   await axios.get(`http://localhost:3000/ortu/${id}`)
-    //     .then((result) => {
-    //         console.log(result.data);
-    //         setnamaIbu(result.data.namaIbu);
-    //         setnikIbu(result.data.nikIbu);
-    //         setnamaAyah(result.data.namaAyah);
-    //         setnikAyah(result.data.nikAyah);
-    //         setAlamat(result.data.alamat);
-    //         setNotlp(result.data.notlp);
-    //     }).catch((err) => {
-    //         console.log(err);
-    //     });
-    // }
+    const getOrtuById = async () => {
+        const response = await axios.get(`http://localhost:3000/ortu/${id}`)
+            setnamaIbu(response.data.data.namaIbu);
+            setnikIbu(response.data.data.nikIbu);
+            setnamaAyah(response.data.data.namaAyah);
+            setnikAyah(response.data.data.nikAyah);
+            setAlamat(response.data.data.alamat);
+            setNotlp(response.data.data.notlp);
+    }
 
   return (
     <>

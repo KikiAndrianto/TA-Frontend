@@ -35,6 +35,12 @@ const OrangTua = () => {
             notlp
         });
         getOrtu()
+        setnamaIbu("")
+        setnikIbu("")
+        setnamaAyah("")
+        setnikAyah("")
+        setAlamat("")
+        setNotlp("")
     } catch (error) {
         console.log(error);
     }
@@ -113,24 +119,25 @@ const OrangTua = () => {
                 <input type="text" className="form-control" value={notlp} onChange={(e) => setNotlp(e.target.value)}/>
             </div>
             <button type="submit" onClick={() => {getOrtu()}} className="btn btn-primary">Submit</button>
-            <button type='submit' className='btn ms-2 btn-primary'>Update</button>
+            
         </form>
     </div>
 
 {/* tabel */}
-    <div className='tableOrtu col mt-3 ms-3'>
+    <div className=' table-responsive col mt-3 ms-3'>
         <label className='mb-1'>Tabel Data Anak</label>
-        <table className="table table-bordered is-striped is-fullwidth border-dark">
+        <div className='tableOrtu'>
+            <table className="table table-bordered is-striped is-fullwidth border-dark">
         <thead className='kepalaTabel bg-primary' >
             <tr>
-            <th className='small'>No</th>
-            <th className='small'>Nama Ibu</th>
-            <th className='is-small'>Nik Ibu</th>
-            <th className='small'>Nama Ayah</th>
-            <th className='small'>Nik Ayah</th>
-            <th className='small'>Alamat</th>
-            <th className='small'>No Hp</th>
-            <th className='small'>Action</th>
+            <th className='f-tbl small'>No</th>
+            <th className='f-tbl small'>Nama Ibu</th>
+            <th className='f-tbl small'>Nik Ibu</th>
+            <th className='f-tbl small'>Nama Ayah</th>
+            <th className='f-tbl small'>Nik Ayah</th>
+            <th className='f-tbl small'>Alamat</th>
+            <th className='f-tbl small'>No Hp</th>
+            <th className='f-tbl small'>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -138,16 +145,17 @@ const OrangTua = () => {
                 ortus.map((ortu, index) => {
                     return (
                         <tr key={ortu.id}>
-                    <th className='small'>{index + 1}</th>
-                    <th className='small'>{ortu.namaIbu}</th>
-                    <th className='small'>{ortu.nikIbu}</th>
-                    <th className='small'>{ortu.namaAyah}</th>
-                    <th className='small'>{ortu.nikAyah}</th>
-                    <th className='small'>{ortu.alamat}</th>
-                    <th className='small'>{ortu.notlp}</th>
-                    <th className='small'>
+                    <th className='f-tbl small'>{index + 1}</th>
+                    <th className='f-tbl small'>{ortu.namaIbu}</th>
+                    <th className='f-tbl small'>{ortu.nikIbu}</th>
+                    <th className='f-tbl small'>{ortu.namaAyah}</th>
+                    <th className='f-tbl small'>{ortu.nikAyah}</th>
+                    <th className='f-tbl small'>{ortu.alamat}</th>
+                    <th className='f-tbl small'>{ortu.notlp}</th>
+                    <th className='f-tbl small'>
                     <Link to={`editOrtu/${ortu.id}`} className='tombol-edit button is-small is-info mr-2'><AiOutlineEdit /></Link>
-                            <button onClick={() => deleteOrtu (ortu.id)} className='button mt-2 text-white is-small bg-danger'><RiDeleteBin6Line /></button>
+                    
+                            <button onClick={() => deleteOrtu (ortu.id)} className='button mt-1 text-white is-small bg-danger'><RiDeleteBin6Line /></button>
                         </th>
                     </tr>
                     )
@@ -155,12 +163,15 @@ const OrangTua = () => {
             }
         </tbody>
         </table>
+        </div>
+        
     </div>
         
     </div>
     
     
     </>
+    
   )
 }
 

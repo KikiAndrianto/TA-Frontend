@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import {Link} from 'react-router-dom'
 import axios from 'axios';
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
-import { AiOutlineEdit} from "react-icons/ai";
-import { RiDeleteBin6Line } from "react-icons/ri";
-
 import '../App.css'
 
-
-const Penimbangan = () => {
-    // untuk data anak
+const EditPenimbangan = () => {
     const [nama, setNama] = useState("")
     const [tglLahir, setTglLahir] = useState("")
     const [ibu, setIbu] = useState("")
@@ -27,78 +21,36 @@ const Penimbangan = () => {
     const [tb, setTinggiBadan] = useState("")
     const [lk, setLingkarKepala] = useState("")
     const [keterangan, setKeterangan] = useState("")
-    
 
     useEffect(() => {
-        getAnak();
-        getPenimbangan();
-      },[])
-
-      const savePenimbangan = async (e) => {
-        e.preventDefault();
-        try {
-          await axios.post('http://localhost:3000/penimbangan', {
-            AnakId,
-            tglPeriksa,
-            usia,
-            bb,
-            tb,
-            lk,
-            keterangan
-          });
-          getPenimbangan()
-      } catch (error) {
-          console.log(error);
-      }
-      }
-
-      const getPenimbangan = () => {
-        axios.get('http://localhost:3000/penimbangan')
-        .then((result) => {
-          const dataPenimbangan = result.data
-          setPenimbangan(dataPenimbangan.data)
-       }).catch((err) => {
-          console.log(err);
-       });
-      }
-
-      console.log(penimbangan);
+      getAnak();
+    },[])
 
     const getAnak = () => {
-        axios.get('http://localhost:3000/anak')
-        .then((result) => {
-          const dataAnak = result.data
-          setAnak(dataAnak.data)
-       }).catch((err) => {
-          console.log(err);
-       });
+      axios.get('http://localhost:3000/anak')
+      .then((result) => {
+        const dataAnak = result.data
+        setAnak(dataAnak.data)
+     }).catch((err) => {
+        console.log(err);
+     });
+    }
+
+    const getAnakuById = async () => {
+      const response = await axios.get(`http://localhost:3000/anak/${AnakId}`)
+          setNama(response.data.data.nama);
+          setTglLahir(new Date(response.data.data.tglLahir));
+          setIbu(response.data.data.Ortu.namaIbu)
       }
 
-      const getAnakuById = async () => {
-        const response = await axios.get(`http://localhost:3000/anak/${AnakId}`)
-            setNama(response.data.data.nama);
-            setTglLahir(new Date(response.data.data.tglLahir));
-            setIbu(response.data.data.Ortu.namaIbu)
-        }
 
-        const deletePenimbangan = async (id) => {
-            try {
-                await axios.delete(`http://localhost:3000/penimbangan/${id}`)
-                getPenimbangan();
-            } catch (error) {
-                console.log(error);
-            }
-          }
-
-  
   return (
     <>
-        <h2 className='judul-penimbangan fw-bolder ms-4'>Form dan Data Penimbangan</h2>
+      <h2 className='judul-penimbangan fw-bolder ms-4'>Edit Data Penimbangan</h2>
 
-        <div className='contener d-flex container-fluid'>
-          
-          <div className='form-penimbangan form ms-3'>
-            <form onSubmit={savePenimbangan}>
+      <div className='contener'>
+        <div className='form-penimbangan form ms-3'>
+            <form>
                 <div className="mb-2 mt-3">
                 <label  className="form-label">Nama Anak</label>
                 <div className='d-flex'>
@@ -156,9 +108,11 @@ const Penimbangan = () => {
                 <button type="submit" className="btn btn-primary shadow">Submit</button>
             </form>
          </div>
+      </div>
 
-        
-        <div className="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      
+
+         <div className="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-scrollable">
                 <div className="modal-content">
                 <div className="modal-header">
@@ -202,60 +156,8 @@ const Penimbangan = () => {
                 </div>
             </div>
             </div>
-        </div>
-
-
-        <div className='tabel-penimbangan mt-3'>
-            <label className='mb-1'>Tabel Data Penimbangan</label>
-            <div className='table-penimbangan'>
-                <table className="table table-bordered is-striped is-fullwidth border-dark">
-            <thead className='kepalaTabel bg-primary' >
-                <tr>
-                    <th className='f-tbl small'>No</th>
-                    <th className='f-tbl small'>Nama Anak</th>
-                    <th className='f-tbl small'>Tanggal Lahir</th>
-                    <th className='f-tbl small'>Nama Ibu</th>
-                    <th className='f-tbl small'>Tanggal Penimbangan</th>
-                    <th className='f-tbl small'>usia (bulan)</th>
-                    <th className='f-tbl small'>Berat Badan</th>
-                    <th className='f-tbl small'>Tinggi Badan</th>
-                    <th className='f-tbl small'>Lingkar Kepala</th>
-                    <th className='f-tbl small'>Keterangan</th>
-                    <th className='f-tbl small'>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    penimbangan.map((penimbangan, index) => {
-                        return (
-                            <tr key={penimbangan.id}>
-                        <th className='f-tbl small'>{index + 1}</th>
-                        <th className='f-tbl small'>{penimbangan.Anak.nama}</th>
-                        <th className='f-tbl small'>{penimbangan.Anak.tglLahir}</th>
-                        <th className='f-tbl small'>test</th>
-                        <th className='f-tbl small'>{penimbangan.tglPeriksa}</th>
-                        <th className='f-tbl small'>{penimbangan.usia}</th>
-                        <th className='f-tbl small'>{penimbangan.bb} kg</th>
-                        <th className='f-tbl small'>{penimbangan.tb} cm</th>
-                        <th className='f-tbl small'>{penimbangan.lk} cm</th>
-                        <th className='f-tbl small'>{penimbangan.keterangan}</th>
-                        <th className='f-tbl small'>
-                        <Link to={`editPenimbangan/${penimbangan.id}`} className='tombol-edit button is-small is-info mr-2'><AiOutlineEdit /></Link>
-                        
-                                <button onClick={() => deletePenimbangan(penimbangan.id) } className='button mt-1 text-white is-small bg-danger'><RiDeleteBin6Line /></button>
-                            </th>
-                        </tr>
-                        )
-                    })
-                }
-            </tbody>
-            </table>
-            </div>
-            
-        </div>
-
     </>
   )
 }
 
-export default Penimbangan
+export default EditPenimbangan
