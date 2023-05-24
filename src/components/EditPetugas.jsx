@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom';
+import Navbar from './Navbar';
 
 const EditPetugas = () => {
   const [nama, setNama] = useState("");
@@ -45,6 +46,7 @@ const EditPetugas = () => {
 
   return (
     <>
+    <Navbar />
       <h2 className='judul fw-bolder ms-4'>Edit Data Petugas</h2>
 
       <div className='ortu d-flex row container-fluid'>

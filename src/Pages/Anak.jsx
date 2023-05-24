@@ -3,9 +3,12 @@ import React, { useEffect, useState } from 'react'
 import { AiOutlineEdit} from "react-icons/ai";
 import {Link} from 'react-router-dom'
 import { RiDeleteBin6Line } from "react-icons/ri";
-import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
-import { format } from 'date-fns';
+import Navbar from '../components/Navbar'
+import swal from 'sweetalert'
+
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Anak = () => {
   // untuk data anak
@@ -23,7 +26,9 @@ const Anak = () => {
   const [OrtuId, setOrtuId] = useState('')
 
   const [namaIbu, setNamaIbu] = useState('')
+  const [test, settest] = useState('')
   
+  AOS.init();
 
   useEffect(() => {
     getIbu();
@@ -85,22 +90,45 @@ const Anak = () => {
     }
 }
 
-function handleDateChange(date) {
-  setTglLahir(new Date(date));
+function handleDateChange(event) {
+  setTglLahir(event.target.value)
+  // setTglLahir(new Date(data));
+  // const tanggalFormatted = dayjs(event.target.value).format('DD-MM-YYYY')
+  // setTglLahir(tanggalFormatted)
 }
+
+console.log(tglLahir);
+
 
 const getOrtuById = async () => {
   const response = await axios.get(`http://localhost:3000/ortu/${OrtuId}`)
       setNamaIbu(response.data.data.namaIbu);
   }
+
+  const handleAddAlert = () => {
+    swal({
+        title: "Sekses",
+        text: "Data Berhasil di tambahkan",
+        icon: "success",
+      });
+}
+
+const handleDeleteAlert = () => {
+    swal({
+        title: "Sekses",
+        text: "Data Berhasil Hapus",
+        icon: "success",
+      });
+}
   
 
   return (
     <>
-      <h2 className='judul fw-bolder ms-4'>Form dan Data Anak</h2>
+     <Navbar />
+      <h2 className='judul fw-bolder ms-4' data-aos="fade-right" data-aos-duration="800">Form dan Data Anak</h2>
       <div className='ortu d-flex row container-fluid'>
 
-        <div className='form ms-3 col-md-4'>
+        <div className='form ms-3 col-md-4' data-aos="fade-right" data-aos-duration="800">
           <form onSubmit={saveAnak}>
               <div className="mb-2 mt-3">
               <label  className="form-label">Nama</label>
@@ -115,7 +143,12 @@ const getOrtuById = async () => {
                   <input type="text" className="form-control" value={tempatLhr} onChange={(e) => setTempatLhr(e.target.value)}/>
               </div>
 
-              <div className="mb-2">
+              <div>
+              <label  className="form-label" >Tanggal Lahir</label>
+                <input type="date" className='form-control' format="dd-mm-yyyy" placeholder='masukkan tanggal' value={tglLahir} onChange={handleDateChange}/>
+              </div>
+
+               {/* <div className="mb-2">
                 <label  className="form-label" >Tanggal Lahir</label>
                   <DatePicker
                 dateFormat="dd/MM/yyyy"
@@ -124,7 +157,7 @@ const getOrtuById = async () => {
                 className="form-control"
                 placeholderText="Pilih tanggal"
               />
-              </div>
+              </div> */}
 
               <div className="mb-2">
                   <label className="form-label">Jenis Kelamin</label>
@@ -141,12 +174,12 @@ const getOrtuById = async () => {
                 <button type="button" className="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Pilih</button>
                 </div>
               </div>
-              <button type="submit" onClick={() => {getAnak()}} className="btn btn-primary">Submit</button>
+              <button type="submit" onClick={() => {getAnak(); handleAddAlert()}} className="btn btn-primary">Submit</button>
           </form>
       </div>
 
 
-      <div className='col mt-3 ms-3'>
+      <div className='col mt-3 ms-3' data-aos="fade-left" data-aos-duration="800">
         <label className='mb-1'>Tabel Data Anak</label>
         <div className='tableOrtu'>
           <table className="table table-bordered is-striped is-fullwidth border-dark">
@@ -176,7 +209,7 @@ const getOrtuById = async () => {
                   <th className='f-tbl small'>{anak.Ortu.namaIbu}</th>
                   <th className='f-tbl small'>
                   <Link to={`editAnak/${anak.id}`} className='tombol-edit button is-small is-info mr-2'><AiOutlineEdit /></Link>
-                      <button onClick={() => deleteAnak (anak.id)} className='button text-white is-small bg-danger mt-1'><RiDeleteBin6Line /></button>
+                      <button onClick={() => {deleteAnak (anak.id); handleDeleteAlert()}} className='button text-white is-small bg-danger mt-1'><RiDeleteBin6Line /></button>
                   </th>
               </tr>
               )

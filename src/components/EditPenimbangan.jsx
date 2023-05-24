@@ -3,6 +3,8 @@ import axios from 'axios';
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import '../App.css'
+import { useNavigate, useParams } from 'react-router-dom';
+import Navbar from './Navbar';
 
 const EditPenimbangan = () => {
     const [nama, setNama] = useState("")
@@ -22,9 +24,34 @@ const EditPenimbangan = () => {
     const [lk, setLingkarKepala] = useState("")
     const [keterangan, setKeterangan] = useState("")
 
+    const Navigate = useNavigate();
+
+    const {id} = useParams();
+
     useEffect(() => {
       getAnak();
+      getPenimbanganById();
     },[])
+
+    const updatePenimbangan = async (e) => {
+      e.preventDefault();
+      try {
+          await axios.put(`http://localhost:3000/penimbangan/${id}`, {
+            AnakId,
+            ibu,
+            tglPeriksa,
+            usia,
+            bb,
+            tb,
+            lk,
+            keterangan
+          });
+          Navigate("/penimbangan");
+          
+      } catch (error) {
+          console.log(error);
+      }
+  };
 
     const getAnak = () => {
       axios.get('http://localhost:3000/anak')
@@ -43,14 +70,29 @@ const EditPenimbangan = () => {
           setIbu(response.data.data.Ortu.namaIbu)
       }
 
+      const getPenimbanganById = async () => {
+        const response = await axios.get(`http://localhost:3000/penimbangan/${id}`)
+          setNama(response.data.data.Anak.nama);
+          setTglLahir(new Date(response.data.data.Anak.tglLahir));
+          setIbu(response.data.data.ibu);
+          setTglPeriksa(new Date(response.data.data.tglPeriksa));
+          setUsia(response.data.data.usia);
+          setBeratBadan(response.data.data.bb);
+          setTinggiBadan(response.data.data.tb);
+          setLingkarKepala(response.data.data.lk);
+          setKeterangan(response.data.data.keterangan);
+          setAnakId(response.data.data.AnakId)
+      }
+
 
   return (
     <>
+    <Navbar />
       <h2 className='judul-penimbangan fw-bolder ms-4'>Edit Data Penimbangan</h2>
 
       <div className='contener'>
         <div className='form-penimbangan form ms-3'>
-            <form>
+            <form onSubmit={updatePenimbangan}>
                 <div className="mb-2 mt-3">
                 <label  className="form-label">Nama Anak</label>
                 <div className='d-flex'>
@@ -105,7 +147,7 @@ const EditPenimbangan = () => {
                     <label className="form-label">Keterangan</label>
                     <input type="text" className="form-control" value={keterangan} onChange={(e) => setKeterangan(e.target.value)}/>
                 </div>
-                <button type="submit" className="btn btn-primary shadow">Submit</button>
+                <button type="submit" className="btn btn-primary shadow">Update</button>
             </form>
          </div>
       </div>

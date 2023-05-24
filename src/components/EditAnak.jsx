@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
+import Navbar from './Navbar';
 
 const EditAnak = () => {
   const [nama, setNama] = useState("")
@@ -83,6 +84,7 @@ const getOrtuById = async () => {
 
   return (
     <>
+    <Navbar />
        <h2 className='judul fw-bolder ms-4'>Edit Data Anak</h2>
 
        <div className='ortu d-flex row container-fluid'>

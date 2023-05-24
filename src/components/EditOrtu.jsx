@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom';
+import Navbar from './Navbar';
 
 
 const EditOrtu = () => {
@@ -48,9 +49,11 @@ const EditOrtu = () => {
             setAlamat(response.data.data.alamat);
             setNotlp(response.data.data.notlp);
     }
+    
 
   return (
     <>
+    <Navbar />
       <h2 className='judul fw-bolder ms-4'>Edit Data Orang Tua</h2>
 
       <div className='ortu d-flex row container-fluid'>

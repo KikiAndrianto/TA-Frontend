@@ -4,6 +4,10 @@ import {useNavigate, Link} from 'react-router-dom'
 import axios from 'axios'
 import { AiOutlineEdit} from "react-icons/ai";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import Navbar from '../components/Navbar'
+import swal from 'sweetalert'
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 
 const OrangTua = () => {
@@ -22,6 +26,7 @@ const OrangTua = () => {
     // menampung id dari button edit
     const [id, setId] = useState();
 
+    AOS.init();
 
     const saveOrtu = async (e) => {
       e.preventDefault();
@@ -73,29 +78,29 @@ const OrangTua = () => {
         }
     }
 
-    //untuk ambil data ortu byID
-    // const getOrtuById = async () => {
-    //     axios.get(`http://localhost:3000/ortu/${id}`)
-    //     .then((result) => {
-    //         setOrtu(result.data)
-    //         setnamaIbu(ortu.data.namaIbu);
-    //         setnikIbu(ortu.data.nikIbu);
-    //         setnamaAyah(ortu.data.namaAyah);
-    //         setnikAyah(ortu.data.nikAyah);
-    //         setAlamat(ortu.data.alamat);
-    //         setNotlp(ortu.data.notlp);
-    //     }).catch((err) => {
-    //         console.log(err);
-    //     });       
-    // }
-    
-    
+    const handleAddAlert = () => {
+        swal({
+            title: "Sekses",
+            text: "Data Berhasil di tambahkan",
+            icon: "success",
+          });
+    }
+
+    const handleDeleteAlert = () => {
+        swal({
+            title: "Sekses",
+            text: "Data Berhasil Hapus",
+            icon: "success",
+          });
+    }
+
   return (
     <>
-        <h2 className='judul fw-bolder ms-4'>Form dan Data Orang Tua</h2>
+    <Navbar />
+        <h2 className='judul fw-bolder ms-4' data-aos="fade-right" data-aos-duration="800">Form dan Data Orang Tua</h2>
     <div className='ortu d-flex row container-fluid'>
         
-        <div className='form ms-3 col-md-4'>
+        <div className='form ms-3 col-md-4' data-aos="fade-right" data-aos-duration="800">
         <form onSubmit={saveOrtu}>
             <div className="mb-2 mt-3">
             <label  className="form-label">Nama Ibu</label>
@@ -118,13 +123,13 @@ const OrangTua = () => {
                 <label className="form-label">No Hp</label>
                 <input type="text" className="form-control" value={notlp} onChange={(e) => setNotlp(e.target.value)}/>
             </div>
-            <button type="submit" onClick={() => {getOrtu()}} className="btn btn-primary">Submit</button>
+            <button type="submit" onClick={() => {getOrtu(); handleAddAlert()}} className="btn btn-primary">Submit</button>
             
         </form>
     </div>
 
 {/* tabel */}
-    <div className=' table-responsive col mt-3 ms-3'>
+    <div className=' table-responsive col mt-3 ms-3' data-aos="fade-left" data-aos-duration="800">
         <label className='mb-1'>Tabel Data Anak</label>
         <div className='tableOrtu'>
             <table className="table table-bordered is-striped is-fullwidth border-dark">
@@ -155,7 +160,7 @@ const OrangTua = () => {
                     <th className='f-tbl small'>
                     <Link to={`editOrtu/${ortu.id}`} className='tombol-edit button is-small is-info mr-2'><AiOutlineEdit /></Link>
                     
-                            <button onClick={() => deleteOrtu (ortu.id)} className='button mt-1 text-white is-small bg-danger'><RiDeleteBin6Line /></button>
+                            <button onClick={() => {deleteOrtu (ortu.id); handleDeleteAlert()}} className='button mt-1 text-white is-small bg-danger'><RiDeleteBin6Line /></button>
                         </th>
                     </tr>
                     )

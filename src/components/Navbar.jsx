@@ -1,11 +1,15 @@
 import React from "react";
 import '../App.css'
 import {Link} from 'react-router-dom'
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Navbar = () => {
+  AOS.init();
+  const user = localStorage.getItem("userName").replace(/["]/g, "");
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top" data-aos="fade-down" data-aos-duration="800">
         <div className="container-fluid">
           <a className="navbar-brand" href="#">
             <img
@@ -29,8 +33,8 @@ const Navbar = () => {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item ms-3">
-                <Link className="menu nav-link active fw-bolder" aria-current="page" to={'/'}>
+              <li className="menu nav-item ms-3 text-decoration-none">
+                <Link className="nav-link active fw-bolder text-decoration-none" aria-current="page" to={'/'}>
                   Home
                 </Link>
               </li>
@@ -45,7 +49,7 @@ const Navbar = () => {
                 </Link>
               </li>
               <li className="nav-item ms-3">
-                <Link className="nav-link active fw-bold" to={'/petugas'}>
+                <Link className="menu-nav nav-link active fw-bold text-decoration-none" to={'/petugas'}>
                   Petugas
                 </Link>
               </li>
@@ -84,16 +88,12 @@ const Navbar = () => {
                   aria-expanded="false"
                 >
                   
-                  <small className="fw-bold">User Login</small>
+                  <small className="fw-bold">{user}</small>
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end animate slideIn">
-                  <a className="dropdown-item">Email</a>
-                  <button
-                    className="dropdown-item"
-                    
-                  >
-                    Logout
-                  </button>
+                  <Link className="dropdown-item" to={''}>
+                     Logout
+                    </Link>
                 </ul>
               </li>
             </div>

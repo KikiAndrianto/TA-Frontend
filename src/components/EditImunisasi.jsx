@@ -1,96 +1,88 @@
 import React, { useEffect, useState } from 'react'
-import {Link} from 'react-router-dom'
 import axios from 'axios';
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
-import { AiOutlineEdit} from "react-icons/ai";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import Navbar from '../components/Navbar'
+import { useNavigate, useParams } from 'react-router-dom';
+import Navbar from './Navbar';
+
+const EditImunisasi = () => {
+    const [nama, setNama] = useState("")
+    const [tglLahir, setTglLahir] = useState("")
+    const [ibu, setIbu] = useState("")
+    const [tglImunisasi, setTglImunisasi] = useState(new Date())
+    const [jenisVaksin, setJenisVaksin] = useState("")
+    const [usia, setUsia] = useState("")
+    const [keterangan, setKeterangan] = useState("")
 
 
-const Imunisasi = () => {
-  const [nama, setNama] = useState("")
-  const [tglLahir, setTglLahir] = useState("")
-  const [ibu, setIbu] = useState("")
-  const [tglImunisasi, setTglImunisasi] = useState(new Date())
-  const [jenisVaksin, setJenisVaksin] = useState("")
-  const [usia, setUsia] = useState("")
-  const [keterangan, setKeterangan] = useState("")
+    const [anak, setAnak] = useState([]);
+    const [AnakId, setAnakId] = useState("")
 
-  const [imunisasi, setImunisasi] = useState([])
+    const Navigate = useNavigate();
 
-  const [anak, setAnak] = useState([]);
-  const [AnakId, setAnakId] = useState("")
+    const {id} = useParams();
 
+    const updateImunisasi = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.put(`http://localhost:3000/imunisasi/${id}`, {
+              AnakId,
+              ibu,
+              tglImunisasi,
+              usia,
+              jenisVaksin,
+              keterangan
+            });
+            Navigate("/imunisasi");
+            
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-  useEffect(() => {
-    getAnak();
-    getImunisasi();
-  },[])
+    useEffect(() => {
+        getAnak();
+        getImunisasiById();
+      },[])
 
-  const saveImunisasi = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post('http://localhost:3000/imunisasi', {
-        AnakId,
-        ibu,
-        tglImunisasi,
-        usia,
-        jenisVaksin,
-        keterangan
-      });
-      getImunisasi()
-  } catch (error) {
-      console.log(error);
-  }
-  }
+      const getAnak = () => {
+        axios.get('http://localhost:3000/anak')
+        .then((result) => {
+          const dataAnak = result.data
+          setAnak(dataAnak.data)
+       }).catch((err) => {
+          console.log(err);
+       });
+      }
 
-  const getAnak = () => {
-    axios.get('http://localhost:3000/anak')
-    .then((result) => {
-      const dataAnak = result.data
-      setAnak(dataAnak.data)
-   }).catch((err) => {
-      console.log(err);
-   });
-  }
+      const getAnakuById = async () => {
+        const response = await axios.get(`http://localhost:3000/anak/${AnakId}`)
+            setNama(response.data.data.nama);
+            setTglLahir(response.data.data.tglLahir)
+            setIbu(response.data.data.Ortu.namaIbu)
+      }
 
-  const getAnakuById = async () => {
-    const response = await axios.get(`http://localhost:3000/anak/${AnakId}`)
-        setNama(response.data.data.nama);
-        setTglLahir(new Date(response.data.data.tglLahir));
-        setIbu(response.data.data.Ortu.namaIbu)
-  }
-
-  const getImunisasi = () => {
-    axios.get('http://localhost:3000/imunisasi')
-    .then((result) => {
-      const dataImunisasi = result.data
-      setImunisasi(dataImunisasi.data)
-   }).catch((err) => {
-      console.log(err);
-   });
-  }
-
-  const deleteImunisasi = async (id) => {
-    console.log(id);
-    try {
-        await axios.delete(`http://localhost:3000/imunisasi/${id}`)
-        getImunisasi();
-    } catch (error) {
-        console.log(error);
-    }
-  }
+      const getImunisasiById = async () => {
+        const response = await axios.get(`http://localhost:3000/imunisasi/${id}`)
+        console.log(response);
+          setNama(response.data.data.Anak.nama);
+          setTglLahir(new Date(response.data.data.Anak.tglLahir));
+          setIbu(response.data.data.ibu);
+          setTglImunisasi(new Date(response.data.data.tglImunisasi));
+          setUsia(response.data.data.usia);
+          setJenisVaksin(response.data.data.jenisVaksin);
+          setKeterangan(response.data.data.keterangan);
+          setAnakId(response.data.data.AnakId)
+      }
 
   return (
     <>
     <Navbar />
-      <h2 className='judul-penimbangan fw-bolder ms-4'>Form dan Data Imunisasi</h2>
+      <h2 className='judul-penimbangan fw-bolder ms-4'>Edit Data Imunisasi</h2>
 
-      <div className='contener mt-4 d-flex container-fluid'>
-          
-          <div className='form-penimbangan form ms-3'>
-            <form onSubmit={saveImunisasi} >
+      <div className='contener'>
+      <div className='form-penimbangan form ms-3'>
+            <form onSubmit={updateImunisasi}>
                 <div className="mb-2 mt-3">
                 <label  className="form-label">Nama Anak</label>
                 <div className='d-flex'>
@@ -136,39 +128,39 @@ const Imunisasi = () => {
                     <div className='d-flex border'>
                       <div className='ms-2 mt-2'>
                           <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value="HB (0 - 24 jam)" id="flexCheckDefault" onChange={(e) => setJenisVaksin(e.target.value)}/>
+                            <input className="form-check-input" type="checkbox" checked={jenisVaksin === "HB (0 - 24 jam)"} value="HB (0 - 24 jam)" id="flexCheckDefault" onChange={(e) => setJenisVaksin(e.target.value)}/>
                             <label className="form-check-label">
                               HB (0 - 24 jam)
                             </label>
                           </div>
                           <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value="BCG" id="flexCheckChecked" onChange={(e) => setJenisVaksin(e.target.value)} />
+                            <input className="form-check-input" type="checkbox" checked={jenisVaksin === "BCG"} value="BCG" id="flexCheckChecked" onChange={(e) => setJenisVaksin(e.target.value)} />
                             <label className="form-check-label" >
                               BCG
                             </label>
                           </div>
 
                           <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value="Polio" id="flexCheckDefault" onChange={(e) => setJenisVaksin(e.target.value)} />
+                            <input className="form-check-input" type="checkbox" checked={jenisVaksin === "Polio"} value="Polio" id="flexCheckDefault" onChange={(e) => setJenisVaksin(e.target.value)} />
                             <label className="form-check-label">
                               Polio
                             </label>
                           </div>
                           <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value="DPT-HB-Hib 1" id="flexCheckChecked" onChange={(e) => setJenisVaksin(e.target.value)}/>
+                            <input className="form-check-input" type="checkbox" checked={jenisVaksin === "DPT-HB-Hib 1"} value="DPT-HB-Hib 1" id="flexCheckChecked" onChange={(e) => setJenisVaksin(e.target.value)}/>
                             <label className="form-check-label" >
                               DPT-HB-Hib 1
                             </label>
                           </div>
 
                           <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value="Polio 2" id="flexCheckDefault" onChange={(e) => setJenisVaksin(e.target.value)}/>
+                            <input className="form-check-input" type="checkbox" checked={jenisVaksin === "Polio 2"} value="Polio 2" id="flexCheckDefault" onChange={(e) => setJenisVaksin(e.target.value)}/>
                             <label className="form-check-label">
                               Polio 2
                             </label>
                           </div>
                           <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value="DPT-HB-Hib 2" id="flexCheckChecked" onChange={(e) => setJenisVaksin(e.target.value)}/>
+                            <input className="form-check-input" type="checkbox" checked={jenisVaksin === "DPT-HB-Hib 2"} value="DPT-HB-Hib 2" id="flexCheckChecked" onChange={(e) => setJenisVaksin(e.target.value)}/>
                             <label className="form-check-label" >
                             DPT-HB-Hib 2
                             </label>
@@ -178,33 +170,33 @@ const Imunisasi = () => {
 
                       <div className='ms-5 mt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value="Polio 3" id="flexCheckDefault" onChange={(e) => setJenisVaksin(e.target.value)}/>
+                            <input className="form-check-input" type="checkbox" checked={jenisVaksin === "Polio 3"} value="Polio 3" id="flexCheckDefault" onChange={(e) => setJenisVaksin(e.target.value)}/>
                             <label className="form-check-label">
                               Polio 3
                             </label>
                           </div>
                           <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value="DPT-HB-Hib 3" id="flexCheckChecked" onChange={(e) => setJenisVaksin(e.target.value)} />
+                            <input className="form-check-input" type="checkbox" checked={jenisVaksin === "DPT-HB-Hib 3"} value="DPT-HB-Hib 3" id="flexCheckChecked" onChange={(e) => setJenisVaksin(e.target.value)} />
                             <label className="form-check-label" >
                             DPT-HB-Hib 3
                             </label>
                           </div>
 
                           <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value="Polio 4" id="flexCheckDefault" onChange={(e) => setJenisVaksin(e.target.value)}/>
+                            <input className="form-check-input" type="checkbox" checked={jenisVaksin === "Polio 4"} value="Polio 4" id="flexCheckDefault" onChange={(e) => setJenisVaksin(e.target.value)}/>
                             <label className="form-check-label">
                               Polio 4
                             </label>
                           </div>
                           <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value="IPV" id="flexCheckChecked" onChange={(e) => setJenisVaksin(e.target.value)} />
+                            <input className="form-check-input" type="checkbox" checked={jenisVaksin === "IPV"} value="IPV" id="flexCheckChecked" onChange={(e) => setJenisVaksin(e.target.value)} />
                             <label className="form-check-label" >
                               IPV
                             </label>
                           </div>
 
                           <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value="Campak" id="flexCheckChecked" onChange={(e) => setJenisVaksin(e.target.value)} />
+                            <input className="form-check-input" type="checkbox" checked={jenisVaksin === "Campak"} value="Campak" id="flexCheckChecked" onChange={(e) => setJenisVaksin(e.target.value)} />
                             <label className="form-check-label" >
                               Campak
                             </label>
@@ -220,8 +212,9 @@ const Imunisasi = () => {
                 <button type="submit" className="btn btn-primary shadow">Submit</button>
             </form>
          </div>
+      </div>
 
-         <div className="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div className="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-scrollable">
                 <div className="modal-content">
                 <div className="modal-header">
@@ -260,54 +253,9 @@ const Imunisasi = () => {
                 </div>
             </div>
             </div>
-        </div>
-
-        <div className='tabel-penimbangan'>
-            <label className='mb-1'>Tabel Data Penimbangan</label>
-            <div className='table-penimbangan'>
-              <table className="table table-bordered is-striped is-fullwidth border-dark">
-            <thead className='kepalaTabel bg-primary' >
-                <tr>
-                    <th className='f-tbl small'>No</th>
-                    <th className='f-tbl small'>Nama Anak</th>
-                    <th className='f-tbl small'>Tanggal Lahir</th>
-                    <th className='f-tbl small'>Nama Ibu</th>
-                    <th className='f-tbl small'>Tanggal Imunisasi</th>
-                    <th className='f-tbl small'>usia</th>
-                    <th className='f-tbl small'>Jenis Vaksin</th>
-                    <th className='f-tbl small'>Keterangan</th>
-                    <th className='f-tbl small'>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    imunisasi.map((imunisasi, index) => {
-                        return (
-                            <tr key={imunisasi.id}>
-                        <th className='f-tbl small'>{index + 1}</th>
-                        <th className='f-tbl small'>{imunisasi.Anak.nama}</th>
-                        <th className='f-tbl small'>{imunisasi.Anak.tglLahir}</th>
-                        <th className='f-tbl small'>{imunisasi.ibu}</th>
-                        <th className='f-tbl small'>{imunisasi.tglImunisasi}</th>
-                        <th className='f-tbl small'>{imunisasi.usia}</th>
-                        <th className='f-tbl small'>{imunisasi.jenisVaksin}</th>
-                        <th className='f-tbl small'>{imunisasi.keterangan}</th>
-                        <th className='f-tbl small'>
-                        <Link to={`editImunisasi/${imunisasi.id}`} className='tombol-edit button is-small is-info mr-2'><AiOutlineEdit /></Link>
-                        
-                                <button onClick={() => deleteImunisasi(imunisasi.id)} className='button mt-1 text-white is-small bg-danger'><RiDeleteBin6Line /></button>
-                            </th>
-                        </tr>
-                        )
-                    })
-                }
-            </tbody>
-            </table>
-            </div>
-            
-        </div>
+      
     </>
   )
 }
 
-export default Imunisasi
+export default EditImunisasi

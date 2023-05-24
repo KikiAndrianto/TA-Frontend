@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
-import '../App.css'
+import swal from 'sweetalert'
 import { AiOutlineEdit} from "react-icons/ai";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import '../App.css'
-
+import Navbar from '../components/Navbar'
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Petugas = () => {
   // Untuk data Petugas
@@ -24,6 +26,7 @@ const Petugas = () => {
   // const [editTugas, setEditTugas] = useState("");
   // const [editNohp, setEditNohp] = useState("");
 
+  AOS.init();
 
   const savePetugas = async (e) => {
     e.preventDefault();
@@ -71,11 +74,28 @@ const deletePetugas = async (id) => {
   }
 }
 
+const handleAddAlert = () => {
+  swal({
+      title: "Sekses",
+      text: "Data Berhasil di tambahkan",
+      icon: "success",
+    });
+}
+
+const handleDeleteAlert = () => {
+  swal({
+      title: "Sekses",
+      text: "Data Berhasil Hapus",
+      icon: "success",
+    });
+}
+
   return (
     <>
-      <h2 className='judul fw-bolder ms-4'>Form dan Data Petugas</h2>
+    <Navbar />
+      <h2 className='judul fw-bolder ms-4 text-decoration-none' data-aos="fade-right" data-aos-duration="800">Form dan Data Petugas</h2>
       <div className='ortu d-flex row container-fluid'>
-        <div className='form ms-3 col-md-4'>
+        <div className='form ms-3 col-md-4' data-aos="fade-right" data-aos-duration="800">
           <form onSubmit={savePetugas} >
               <div className="mb-2 mt-3">
               <label  className="form-label">Nama</label>
@@ -95,11 +115,11 @@ const deletePetugas = async (id) => {
                   <label className="form-label">No Hp</label>
                   <input type="text" className="form-control mb-3" value={nohp} onChange={(e) => setNohp(e.target.value)}/>
               </div>
-              <button type="submit" onClick={() => {getPetugas()}}  className="btn btn-primary">Submit</button>
+              <button type="submit" onClick={() => {getPetugas(); handleAddAlert()}}  className="btn btn-primary">Submit</button>
           </form>
       </div>
 
-      <div className='col mt-3 ms-3'>
+      <div className='col mt-3 ms-3' data-aos="fade-left" data-aos-duration="800">
         <div className='bg-light'>
           <label className='mb-1 ' >Tabel Data Petugas</label>
         </div>
@@ -130,7 +150,7 @@ const deletePetugas = async (id) => {
                 <th className='small'>
                 <Link to={`editPetugas/${petugas.id}`} className='tombol-edit button is-small is-info mr-2'><AiOutlineEdit /></Link>
                 {/* <button  className='button mt-1 is-small bg-info' data-bs-toggle="modal" data-bs-target="#exampleModal"><AiOutlineEdit /></button> */}
-                <button onClick={() => deletePetugas (petugas.id)} className='button text-white mt-1 is-small bg-danger'><RiDeleteBin6Line /></button>
+                <button onClick={() => {deletePetugas (petugas.id); handleDeleteAlert()}} className='button text-white mt-1 is-small bg-danger'><RiDeleteBin6Line /></button>
                 </th>
               </tr>
                   )

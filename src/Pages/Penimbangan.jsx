@@ -5,8 +5,8 @@ import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import { AiOutlineEdit} from "react-icons/ai";
 import { RiDeleteBin6Line } from "react-icons/ri";
-
 import '../App.css'
+import Navbar from '../components/Navbar';
 
 
 const Penimbangan = () => {
@@ -21,7 +21,7 @@ const Penimbangan = () => {
     const [penimbangan, setPenimbangan] = useState([])
 
     // untuk data penimbangan
-    const [tglPeriksa, setTglPeriksa] = useState("")
+    const [tglPeriksa, setTglPeriksa] = useState(new Date())
     const [usia, setUsia] = useState("")
     const [bb, setBeratBadan] = useState("")
     const [tb, setTinggiBadan] = useState("")
@@ -39,6 +39,7 @@ const Penimbangan = () => {
         try {
           await axios.post('http://localhost:3000/penimbangan', {
             AnakId,
+            ibu,
             tglPeriksa,
             usia,
             bb,
@@ -47,6 +48,15 @@ const Penimbangan = () => {
             keterangan
           });
           getPenimbangan()
+          setNama("")
+          setTglLahir("")
+          setIbu("")
+          setTglPeriksa("")
+          setUsia("")
+          setBeratBadan("")
+          setTinggiBadan("")
+          setLingkarKepala("")
+          setKeterangan("")
       } catch (error) {
           console.log(error);
       }
@@ -76,6 +86,7 @@ const Penimbangan = () => {
 
       const getAnakuById = async () => {
         const response = await axios.get(`http://localhost:3000/anak/${AnakId}`)
+        console.log(response);
             setNama(response.data.data.nama);
             setTglLahir(new Date(response.data.data.tglLahir));
             setIbu(response.data.data.Ortu.namaIbu)
@@ -93,6 +104,7 @@ const Penimbangan = () => {
   
   return (
     <>
+    <Navbar />
         <h2 className='judul-penimbangan fw-bolder ms-4'>Form dan Data Penimbangan</h2>
 
         <div className='contener d-flex container-fluid'>
@@ -110,7 +122,7 @@ const Penimbangan = () => {
                 <div className="mb-2">
                     <label className="form-label" >Tanggal Lahir</label>
                     <DatePicker
-                        dateFormat="yyyy-MM-dd"
+                        dateFormat="dd/MM/yyyy"
                         id="date-input"
                         selected={tglLahir}
                         onChange={(data) => setTglLahir(data)}
@@ -123,9 +135,9 @@ const Penimbangan = () => {
                     <input type="text" className="form-control" value={ibu} onChange={(e) => setIbu(e.target.value)}/>
                 </div>
                 <div className="mb-2 mt-5">
-                    <label className="form-label" >Tanggal Lahir</label>
+                    <label className="form-label" >Tanggal Penimbangan</label>
                     <DatePicker
-                        dateFormat="yyyy-MM-dd"
+                        dateFormat="dd/MM/yyyy"
                         id="date-input"
                         selected={tglPeriksa}
                         onChange={(data) => setTglPeriksa(data)}
@@ -193,8 +205,6 @@ const Penimbangan = () => {
                     }
                     </tbody>
                     </table>
-
-
                 </div>
                 <div className="modal-footer">
                    
@@ -232,7 +242,7 @@ const Penimbangan = () => {
                         <th className='f-tbl small'>{index + 1}</th>
                         <th className='f-tbl small'>{penimbangan.Anak.nama}</th>
                         <th className='f-tbl small'>{penimbangan.Anak.tglLahir}</th>
-                        <th className='f-tbl small'>test</th>
+                        <th className='f-tbl small'>{penimbangan.ibu}</th>
                         <th className='f-tbl small'>{penimbangan.tglPeriksa}</th>
                         <th className='f-tbl small'>{penimbangan.usia}</th>
                         <th className='f-tbl small'>{penimbangan.bb} kg</th>
