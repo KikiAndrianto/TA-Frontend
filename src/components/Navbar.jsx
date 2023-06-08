@@ -34,7 +34,7 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="menu nav-item ms-3 text-decoration-none">
-                <Link className="nav-link active fw-bolder text-decoration-none" aria-current="page" to={'/'}>
+                <Link className="nav-link active fw-bolder text-decoration-none" aria-current="page" to={'/home'}>
                   Home
                 </Link>
               </li>
@@ -77,6 +77,46 @@ const Navbar = () => {
                   </li>
                 </ul>
               </li>
+
+              <li className="nav-item dropdown ms-3">
+                <a
+                  className="nav-link dropdown-toggle active fw-bold"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Laporan
+                </a>
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li>
+                    <Link className="dropdown-item" to={'/laporanAnak'}>
+                      Data Anak
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to={'/laporanOrtu'}>
+                      Data Orang Tua
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to={'/laporanPetugas'}>
+                      Data Petugas
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to={'/laporanPenimbangan'}>
+                      Data Penimbangan
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to={'/laporanImunisasi'}>
+                      Data Imunisasi
+                    </Link>
+                  </li>
+                </ul>
+              </li>
             </ul>
             <form className="d-flex">
             <div className="navbar-nav responsive-hide">
@@ -91,7 +131,7 @@ const Navbar = () => {
                   <small className="fw-bold">{user}</small>
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end animate slideIn">
-                  <Link className="dropdown-item" to={''}>
+                  <Link className="dropdown-item" to={'/'}>
                      Logout
                     </Link>
                 </ul>

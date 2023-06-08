@@ -9,6 +9,7 @@ import Navbar from '../components/Navbar'
 import AOS from "aos";
 import "aos/dist/aos.css";
 
+
 const Petugas = () => {
   // Untuk data Petugas
   const [nama, setNama] = useState("");
@@ -19,34 +20,43 @@ const Petugas = () => {
 
   const [petugass, setPetugas] = useState([]);
 
-  // Untuk Edit data Petugas
-  // const [editNama, setEditNama] = useState("");
-  // const [editAlamat, setEditAlamat] = useState("");
-  // const [editJabatan, setEditJabatan] = useState("");
-  // const [editTugas, setEditTugas] = useState("");
-  // const [editNohp, setEditNohp] = useState("");
+  const [cariNama, setCariNama] = useState("")
+  const [hasilPetugas, setHasilPetugas] = useState([]); 
 
   AOS.init();
 
   const savePetugas = async (e) => {
     e.preventDefault();
-    try {
-      await axios.post('http://localhost:3000/petugas', {
-          nama,
-          alamat,
-          jabatan,
-          tugas,
-          nohp
+    if (nama === "" || alamat === "" || jabatan === "" || tugas === "" || nohp === "") {
+      swal({
+        icon: "error",
+        text: "Data Tidak Boleh Kosong!",
       });
-      getPetugas()
-      setNama("")
-      setAlamat("")
-      setJabatan("")
-      setTugas("")
-      setNohp("")
-  } catch (error) {
-      console.log(error);
-  }
+    }else{
+      swal({
+        text: "Data Berhasil Di Tambahkan",
+        icon: "success",
+      });
+
+          try {
+          await axios.post('http://localhost:3000/petugas', {
+              nama,
+              alamat,
+              jabatan,
+              tugas,
+              nohp
+          });
+          getPetugas()
+          setNama("")
+          setAlamat("")
+          setJabatan("")
+          setTugas("")
+          setNohp("")
+      } catch (error) {
+          console.log(error);
+       }
+    }
+    
   }
 
   useEffect(() => {
@@ -74,14 +84,6 @@ const deletePetugas = async (id) => {
   }
 }
 
-const handleAddAlert = () => {
-  swal({
-      title: "Sekses",
-      text: "Data Berhasil di tambahkan",
-      icon: "success",
-    });
-}
-
 const handleDeleteAlert = () => {
   swal({
       title: "Sekses",
@@ -89,6 +91,21 @@ const handleDeleteAlert = () => {
       icon: "success",
     });
 }
+
+const cariData = (e) => {
+  e.preventDefault();
+  if (cariNama.trim() !== '') {
+    const hasilPetugas = petugass.filter(
+      row =>
+        row.nama.toLowerCase().includes(cariNama.toLowerCase())
+    );
+    setHasilPetugas(hasilPetugas);
+  } else {
+    setHasilPetugas([]);
+  }
+  };
+
+  console.log(hasilPetugas);
 
   return (
     <>
@@ -115,16 +132,59 @@ const handleDeleteAlert = () => {
                   <label className="form-label">No Hp</label>
                   <input type="text" className="form-control mb-3" value={nohp} onChange={(e) => setNohp(e.target.value)}/>
               </div>
-              <button type="submit" onClick={() => {getPetugas(); handleAddAlert()}}  className="btn btn-primary">Submit</button>
+              <button type="submit" onClick={() => getPetugas}  className="btn btn-primary">Submit</button>
           </form>
       </div>
 
       <div className='col mt-3 ms-3' data-aos="fade-left" data-aos-duration="800">
-        <div className='bg-light'>
-          <label className='mb-1 ' >Tabel Data Petugas</label>
+      <div className='d-flex justify-content-between'>
+          <div>
+            <label className='mt-2 fw-bold'>Tabel Data Petugas</label>
+          </div>
+          <div className='d-flex'>
+          <input type="text" className=" form-control" placeholder='Cari nama petugas' value={cariNama} onChange={(e) => setCariNama(e.target.value)} />
+            <button onClick={cariData} className='btn bg-primary text-white ms-2'>Cari</button>
+          </div>
         </div>
-        <div className='table-Petugas '>
-          <table className="table table-bordered is-striped is-fullwidth border-dark">
+        <div className='table-Petugas mt-2'>
+
+        {hasilPetugas.length > 0 ? (
+        <table className="table table-bordered is-striped is-fullwidth border-dark" id="table-to-print">
+            <thead className='kepalaTabel bg-primary'>
+                <tr>
+                <th className='f-tbl small'>No</th>
+                <th className='f-tbl small'>Nama</th>
+                <th className='f-tbl small'>Alamat</th>
+                <th className='f-tbl small'>Jabatan</th>
+                <th className='f-tbl small'>Tugas</th>
+                <th className='f-tbl small'>No HP</th>
+                <th className='f-tbl small'>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+              {
+                hasilPetugas.map((row, index) => {
+                  return (
+                    <tr key={row.id}>
+                <th className='f-tbl small'>{index + 1}</th>
+                <th className='f-tbl small'>{row.nama}</th>
+                <th className='f-tbl small'>{row.alamat}</th>
+                <th className='f-tbl small'>{row.jabatan}</th>
+                <th className='f-tbl small'>{row.tugas}</th>
+                <th className='f-tbl small'>{row.nohp}</th>
+                <th className='small'>
+                  <Link to={`editPetugas/${row.id}`} className='tombol-edit button is-small is-info mr-2'><AiOutlineEdit /></Link>
+                  <button onClick={() => {deletePetugas (row.id); handleDeleteAlert(); window.location.reload()}} className='button text-white mt-1 is-small bg-danger'><RiDeleteBin6Line /></button>
+                </th>
+              </tr>
+                  )
+                })
+              }
+            </tbody>
+          </table> 
+
+        ) : (
+          <table className="table table-bordered is-striped is-fullwidth border-dark" id="table-to-print">
             <thead className='kepalaTabel bg-primary'>
                 <tr>
                 <th className='f-tbl small'>No</th>
@@ -149,7 +209,6 @@ const handleDeleteAlert = () => {
                 <th className='f-tbl small'>{petugas.nohp}</th>
                 <th className='small'>
                 <Link to={`editPetugas/${petugas.id}`} className='tombol-edit button is-small is-info mr-2'><AiOutlineEdit /></Link>
-                {/* <button  className='button mt-1 is-small bg-info' data-bs-toggle="modal" data-bs-target="#exampleModal"><AiOutlineEdit /></button> */}
                 <button onClick={() => {deletePetugas (petugas.id); handleDeleteAlert()}} className='button text-white mt-1 is-small bg-danger'><RiDeleteBin6Line /></button>
                 </th>
               </tr>
@@ -158,6 +217,9 @@ const handleDeleteAlert = () => {
               }
             </tbody>
           </table> 
+        )}
+
+          
         </div>
         
       </div>

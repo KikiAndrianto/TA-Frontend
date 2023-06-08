@@ -19,6 +19,12 @@ import Register from './Pages/Register'
 import CekData from './Pages/CekData'
 import HomeIbu from './Pages/HomeIbu'
 import CekHasil from './Pages/CekHasil'
+import FormHasil from './components/FormHasil'
+import LaporanAnak from './Pages/LaporanAnak'
+import LaporanOrtu from './Pages/LaporanOrtu'
+import LaporanPetugas from './Pages/LaporanPetugas'
+import LaporanPenimbangan from './Pages/LaporanPenimbangan'
+import LaporanImunisasi from './Pages/LaporanImunisasi'
 
 function App() {
 
@@ -42,6 +48,12 @@ function App() {
       <Route path='/data' element={<CekData />}/>
       <Route path='/homeIbu' element={<HomeIbu />}/>
       <Route path='/cekHasil' element={<CekHasil />}/>
+      <Route path='/laporanAnak' element={<LaporanAnak />}/>
+      <Route path='/laporanOrtu' element={<LaporanOrtu />}/>
+      <Route path='/laporanPetugas' element={<LaporanPetugas />}/>
+      <Route path='/laporanPenimbangan' element={<LaporanPenimbangan />}/>
+      <Route path='/laporanImunisasi' element={<LaporanImunisasi />}/>
+      {/* <Route path='/cekHasil/formHasil/:id' element={<FormHasil />}/> */}
     </Routes>
     {/* <Footer /> */}
     </BrowserRouter>

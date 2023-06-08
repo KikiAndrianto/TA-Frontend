@@ -11,6 +11,10 @@ import "aos/dist/aos.css";
 
 
 const OrangTua = () => {
+    const Navigate = useNavigate();
+    const [cariNama, setCariNama] = useState("")
+    const [hasilOrtu, setHasilOrtu] = useState([]); 
+
     // untuk form
     const [namaIbu, setnamaIbu] = useState("");
     const [nikIbu, setnikIbu] = useState("");
@@ -30,25 +34,43 @@ const OrangTua = () => {
 
     const saveOrtu = async (e) => {
       e.preventDefault();
-      try {
-        await axios.post('http://localhost:3000/ortu', {
-            namaIbu,
-            nikIbu,
-            namaAyah,
-            nikAyah,
-            alamat,
-            notlp
+      if (namaIbu === "" || namaAyah === "" || nikIbu === "" || nikAyah === "" || alamat === "" || notlp === "") {
+        swal({
+          icon: "error",
+          text: "Data Tidak Boleh Kosong!",
         });
-        getOrtu()
-        setnamaIbu("")
-        setnikIbu("")
-        setnamaAyah("")
-        setnikAyah("")
-        setAlamat("")
-        setNotlp("")
-    } catch (error) {
-        console.log(error);
-    }
+      } else if (nikIbu.length < 16 || nikAyah.length < 16) {
+        swal({
+          icon: "error",
+          text: "NIK harus berjumlah 16 angka",
+        });
+      } else{
+        swal({
+          text: "Data Berhasil Di Tambahkan",
+          icon: "success",
+        });
+
+            try {
+            await axios.post('http://localhost:3000/ortu', {
+                namaIbu,
+                nikIbu,
+                namaAyah,
+                nikAyah,
+                alamat,
+                notlp
+            });
+            getOrtu()
+            setnamaIbu("")
+            setnikIbu("")
+            setnamaAyah("")
+            setnikAyah("")
+            setAlamat("")
+            setNotlp("")
+        } catch (error) {
+            console.log(error);
+        }
+      }
+      
     }
     
 // Untuk Tabel
@@ -94,6 +116,19 @@ const OrangTua = () => {
           });
     }
 
+    const cariData = (e) => {
+        e.preventDefault();
+        if (cariNama.trim() !== '') {
+          const hasilOrtu = ortus.filter(
+            row =>
+              row.namaIbu.toLowerCase().includes(cariNama.toLowerCase())
+          );
+          setHasilOrtu(hasilOrtu);
+        } else {
+          setHasilOrtu([]);
+        }
+        };
+
   return (
     <>
     <Navbar />
@@ -123,16 +158,63 @@ const OrangTua = () => {
                 <label className="form-label">No Hp</label>
                 <input type="text" className="form-control" value={notlp} onChange={(e) => setNotlp(e.target.value)}/>
             </div>
-            <button type="submit" onClick={() => {getOrtu(); handleAddAlert()}} className="btn btn-primary">Submit</button>
+            <button type="submit" onClick={() => getOrtu} className="btn btn-primary">Submit</button>
             
         </form>
     </div>
 
 {/* tabel */}
     <div className=' table-responsive col mt-3 ms-3' data-aos="fade-left" data-aos-duration="800">
-        <label className='mb-1'>Tabel Data Anak</label>
-        <div className='tableOrtu'>
+    <div className='d-flex justify-content-between'>
+          <div>
+            <label className='mt-2 fw-bold'>Tabel Data Orang Tua</label>
+          </div>
+          <div className='d-flex'>
+          <input type="text" className=" form-control" placeholder='Cari nama ibu' value={cariNama} onChange={(e) => setCariNama(e.target.value)} />
+            <button onClick={cariData} className='btn bg-primary text-white ms-2'>Cari</button>
+          </div>
+        </div>
+        <div className='tableOrtu mt-2'>
+
+        {hasilOrtu.length > 0 ? (
             <table className="table table-bordered is-striped is-fullwidth border-dark">
+            <thead className='kepalaTabel bg-primary' >
+                <tr>
+                <th className='f-tbl small'>No</th>
+                <th className='f-tbl small'>Nama Ibu</th>
+                <th className='f-tbl small'>Nik Ibu</th>
+                <th className='f-tbl small'>Nama Ayah</th>
+                <th className='f-tbl small'>Nik Ayah</th>
+                <th className='f-tbl small'>Alamat</th>
+                <th className='f-tbl small'>No Hp</th>
+                <th className='f-tbl small'>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {
+                    hasilOrtu.map((row, index) => {
+                        return (
+                            <tr key={row.id}>
+                        <th className='f-tbl small'>{index + 1}</th>
+                        <th className='f-tbl small'>{row.namaIbu}</th>
+                        <th className='f-tbl small'>{row.nikIbu}</th>
+                        <th className='f-tbl small'>{row.namaAyah}</th>
+                        <th className='f-tbl small'>{row.nikAyah}</th>
+                        <th className='f-tbl small'>{row.alamat}</th>
+                        <th className='f-tbl small'>{row.notlp}</th>
+                        <th className='f-tbl small'>
+                        <Link to={`editOrtu/${row.id}`} className='tombol-edit button is-small is-info mr-2'><AiOutlineEdit /></Link>
+                         <button onClick={() => {deleteOrtu (row.id); handleDeleteAlert(); window.location.reload()}} className='button mt-1 text-white is-small bg-danger'><RiDeleteBin6Line /></button>
+                     </th>
+                 </tr>
+                 )
+             })
+         }
+     </tbody>
+     </table>
+
+      ) : (
+        <table className="table table-bordered is-striped is-fullwidth border-dark">
         <thead className='kepalaTabel bg-primary' >
             <tr>
             <th className='f-tbl small'>No</th>
@@ -168,13 +250,10 @@ const OrangTua = () => {
             }
         </tbody>
         </table>
+      )}        
         </div>
-        
     </div>
-        
     </div>
-    
-    
     </>
     
   )

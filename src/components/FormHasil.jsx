@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios'
 import NavbarIbu from '../components/NavbarIbu'
-import AOS from "aos";
-import "aos/dist/aos.css";
 
-const CekData = () => {
+const formHasil = () => {
     const [cariNik, setCariNik] = useState("")
     const [anaks, setAnaks] = useState([])
 
@@ -15,8 +13,6 @@ const CekData = () => {
     const [hasilAnak, setHasilAnak] = useState([]); 
     const [hasilPenimbangan, sethasilPenimbangan] = useState([]);
     const [hasilImunisasi, sethasilImunisasi] = useState([]);
-
-    AOS.init();
 
     useEffect(() => {
         getAnak();
@@ -58,18 +54,7 @@ const CekData = () => {
     
     const cariData = (e) => {
         e.preventDefault();
-        if (cariNik === "") {
-          swal({
-            icon: "error",
-            text: "Data Tidak Boleh Kosong!",
-          });
-        } else if (cariNik.length < 16 ) {
-          swal({
-            icon: "error",
-            text: "NIK harus berjumlah 16 angka",
-          });
-        } else{
-           if (cariNik.trim() !== '') {
+        if (cariNik.trim() !== '') {
           const hasilAnak = anaks.filter(
             row =>
               row.nama.toLowerCase().includes(cariNik.toLowerCase()) ||
@@ -93,17 +78,13 @@ const CekData = () => {
           sethasilPenimbangan([]);
           setImunisasi([]);
         }
-        }
-       
         };
-
-        console.log(hasilAnak);
 
   return (
     <>
-    <NavbarIbu />
-      <h2 className='judul fw-bolder ms-4' data-aos="fade-right" data-aos-duration="800">Cek Data Anak</h2>
-    <div className='' data-aos="fade-right" data-aos-duration="800">
+    <Navbar />
+      <h2 className='judul fw-bolder ms-4'>Cek Data Anak</h2>
+    <div className=''>
         <form>
           <div className='form-cek mt-3'>
             <label  className="form-label">Untuk mengecek data Masukkan NIK anak</label>
@@ -113,7 +94,7 @@ const CekData = () => {
         </form>
     </div>
     {hasilAnak.length > 0 ? (
-    <div className='mt-3 ms-4' data-aos="fade-right" data-aos-duration="800">
+    <div className='mt-3 ms-4'>
         <label className='mb-1 fw-bold'>Tabel Data Anak</label>
         <div className='tabel-cek table-responsive'>
           <table className="table table-bordered table-responsive is-striped is-fullwidth border-dark">
@@ -183,7 +164,7 @@ const CekData = () => {
       </div>
 
       ) : (
-        <p className='ms-4' data-aos="fade-right" data-aos-duration="800">Data Tidak Di Temukan</p>
+        <p className='ms-4'>Data Tidak Di Temukan</p>
       )}
 
 
@@ -274,4 +255,4 @@ const CekData = () => {
   )
 }
 
-export default CekData
+export default formHasil

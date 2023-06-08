@@ -11,6 +11,11 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 const Anak = () => {
+  const [cariNama, setCariNama] = useState("")
+  const [cariNamaAnak, setCariNamaAnak] = useState("")
+
+  const [hasilOrtu, setHasilOrtu] = useState([]); 
+  const [hasilAnak, setHasilAnak] = useState([]); 
   // untuk data anak
   const [nama, setNama] = useState("")
   const [nik, setNik] = useState("")
@@ -38,25 +43,42 @@ const Anak = () => {
   // function save data anak
   const saveAnak = async (e) => {
     e.preventDefault();
-    try {
-      await axios.post('http://localhost:3000/anak', {
-          nama,
-          nik,
-          tempatLhr,
-          tglLahir,
-          jk,
-          OrtuId
+    if (nama === "" || nik === "" || tempatLhr === "" || tglLahir === "" || jk === "") {
+      swal({
+        icon: "error",
+        text: "Data Tidak Boleh Kosong!",
       });
-      getAnak();
-      setNama("");
-      setNik("");
-      setTempatLhr("");
-      setTglLahir("");
-      setJk("jk");
-      setNamaIbu("");
-  } catch (error) {
-      console.log(error);
-  }
+    } else if (nik.length < 16 ) {
+      swal({
+        icon: "error",
+        text: "NIK harus berjumlah 16 angka",
+      });
+    } else{
+      swal({
+        text: "Data Berhasil Di Tambahkan",
+        icon: "success",
+      });
+          try {
+          await axios.post('http://localhost:3000/anak', {
+              nama,
+              nik,
+              tempatLhr,
+              tglLahir,
+              jk,
+              OrtuId
+          });
+          getAnak();
+          setNama("");
+          setNik("");
+          setTempatLhr("");
+          setTglLahir("");
+          setJk("jk");
+          setNamaIbu("");
+      } catch (error) {
+          console.log(error);
+      }
+    }
+    
   }
 
   // ambil data anak
@@ -84,7 +106,8 @@ const Anak = () => {
   const deleteAnak = async (id) => {
     try {
         await axios.delete(`http://localhost:3000/anak/${id}`)
-        getAnak();
+        getAnak()
+        // window.location.reload();
     } catch (error) {
         console.log(error);
     }
@@ -92,26 +115,14 @@ const Anak = () => {
 
 function handleDateChange(event) {
   setTglLahir(event.target.value)
-  // setTglLahir(new Date(data));
-  // const tanggalFormatted = dayjs(event.target.value).format('DD-MM-YYYY')
-  // setTglLahir(tanggalFormatted)
 }
 
-console.log(tglLahir);
 
 
 const getOrtuById = async () => {
   const response = await axios.get(`http://localhost:3000/ortu/${OrtuId}`)
       setNamaIbu(response.data.data.namaIbu);
   }
-
-  const handleAddAlert = () => {
-    swal({
-        title: "Sekses",
-        text: "Data Berhasil di tambahkan",
-        icon: "success",
-      });
-}
 
 const handleDeleteAlert = () => {
     swal({
@@ -120,6 +131,34 @@ const handleDeleteAlert = () => {
         icon: "success",
       });
 }
+
+const cariData = (e) => {
+  e.preventDefault();
+  if (cariNama.trim() !== '') {
+    const hasilOrtu = options.filter(
+      row =>
+        row.namaIbu.toLowerCase().includes(cariNama.toLowerCase())
+    );
+    setHasilOrtu(hasilOrtu);
+  } else {
+    setHasilOrtu([]);
+  }
+  };
+
+  const cariDataAnak = (e) => {
+    e.preventDefault();
+    if (cariNamaAnak.trim() !== '') {
+      const hasilAnak = anaks.filter(
+        row =>
+          row.nama.toLowerCase().includes(cariNamaAnak.toLowerCase())
+      );
+      setHasilAnak(hasilAnak);
+    } else {
+      setHasilAnak([]);
+    }
+    };
+
+    // console.log(hasilAnak);
   
 
   return (
@@ -148,17 +187,6 @@ const handleDeleteAlert = () => {
                 <input type="date" className='form-control' format="dd-mm-yyyy" placeholder='masukkan tanggal' value={tglLahir} onChange={handleDateChange}/>
               </div>
 
-               {/* <div className="mb-2">
-                <label  className="form-label" >Tanggal Lahir</label>
-                  <DatePicker
-                dateFormat="dd/MM/yyyy"
-                id="date-input"
-                selected={tglLahir} onChange={handleDateChange}
-                className="form-control"
-                placeholderText="Pilih tanggal"
-              />
-              </div> */}
-
               <div className="mb-2">
                   <label className="form-label">Jenis Kelamin</label>
                   <select className="form-select mb-2" id="inputJK" value={jk} onChange={(e) => setJk(e.target.value)} name="inputJK">
@@ -174,15 +202,62 @@ const handleDeleteAlert = () => {
                 <button type="button" className="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Pilih</button>
                 </div>
               </div>
-              <button type="submit" onClick={() => {getAnak(); handleAddAlert()}} className="btn btn-primary">Submit</button>
+              <button type="submit" onClick={() => getAnak} className="btn btn-primary">Submit</button>
           </form>
       </div>
 
 
       <div className='col mt-3 ms-3' data-aos="fade-left" data-aos-duration="800">
-        <label className='mb-1'>Tabel Data Anak</label>
-        <div className='tableOrtu'>
-          <table className="table table-bordered is-striped is-fullwidth border-dark">
+        <div className='d-flex justify-content-between'>
+          <div>
+            <label className='mt-2 fw-bold'>Tabel Data Anak</label>
+          </div>
+          <div className='d-flex'>
+          <input type="text" className=" form-control" placeholder='Cari nama anak' value={cariNamaAnak} onChange={(e) => setCariNamaAnak(e.target.value)} />
+            <button onClick={cariDataAnak} className='btn bg-primary text-white ms-2'>Cari</button>
+          </div>
+        </div>
+        <div className='tableOrtu mt-2'>
+
+        {hasilAnak.length > 0 ? (
+          <table className="geser table table-bordered is-striped is-fullwidth border-dark">
+          <thead className='kepalaTabel bg-primary' >
+              <tr>
+              <th className='f-tbl small'>No</th>
+              <th className='f-tbl small'>Nama</th>
+              <th className='f-tbl small'>Nik</th>
+              <th className='f-tbl small'>Tempat Lahir</th>
+              <th className='f-tbl small'>Tanggal Lahir</th>
+              <th className='f-tbl small'>Jenis Kelamin</th>
+              <th className='f-tbl small'>Nama Ibu</th>
+              <th className='f-tbl small'>Aksi</th>
+              </tr>
+          </thead>
+          <tbody>
+            {
+              hasilAnak.map((row, index) => {
+                return (
+                  <tr key={row.id}>
+                    <th className='f-tbl small'>{index + 1}</th>
+                    <th className='f-tbl small'>{row.nama}</th>
+                    <th className='f-tbl small'>{row.nik}</th>
+                    <th className='f-tbl small'>{row.tempatLhr}</th>
+                    <th className='f-tbl small'>{row.tglLahir}</th>
+                    <th className='f-tbl small'>{row.jk}</th>
+                    <th className='f-tbl small'>{row.Ortu.namaIbu}</th>
+                    <th className='f-tbl small'>
+                    <Link to={`editAnak/${row.id}`} className='tombol-edit button is-small is-info mr-2'><AiOutlineEdit /></Link>
+                        <button onClick={() => {deleteAnak (row.id); handleDeleteAlert(); window.location.reload()}} className='button text-white is-small bg-danger mt-1'><RiDeleteBin6Line /></button>
+                    </th>
+                </tr>
+                )
+              })
+            }
+          </tbody>
+          </table>
+
+      ) : (
+        <table className="geser table table-bordered is-striped is-fullwidth border-dark">
         <thead className='kepalaTabel bg-primary' >
             <tr>
             <th className='f-tbl small'>No</th>
@@ -217,6 +292,9 @@ const handleDeleteAlert = () => {
           }
         </tbody>
         </table>
+      )}
+
+          
         </div>
         
       </div>
@@ -229,8 +307,41 @@ const handleDeleteAlert = () => {
                   <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div className="modal-body">
+                  <div className='carinama d-flex'>
+                    <input type="text" className=" form-control" placeholder='Cari nama' value={cariNama} onChange={(e) => setCariNama(e.target.value)}/>
+                    <button type='submit' onClick={cariData} className='ms-2 btn btn-primary shadow' >Cari</button>
+                  </div>
 
-                <table className="table table-bordered is-striped is-fullwidth border-dark">
+                  {hasilOrtu.length > 0 ? (
+                     <table className="mt-2 table table-bordered is-striped is-fullwidth border-dark">
+                     <thead className='kepalaTabel bg-primary' >
+                         <tr>
+                         <th className='f-tbl small'>No</th>
+                         <th className='f-tbl small'>Nama</th>
+                         <th className='f-tbl small'>Alamat</th>
+                         <th className='f-tbl small'>No Telepon</th>
+                         <th className='f-tbl small'>Aksi</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                     {
+                         hasilOrtu.map((row, index) => {
+                         return (
+                             <tr key={row.id}>
+                             <th className='f-tbl small'>{index + 1}</th>
+                             <th className='f-tbl small'>{row.namaIbu}</th>
+                             <th className='f-tbl small'>{row.alamat}</th>
+                             <th className='f-tbl small'>{row.notlp}</th>
+                             <th><button className='btn btn-primary' onFocus={() => setOrtuId(row.id)} onClick={getOrtuById} data-bs-dismiss="modal">Pilih</button></th>
+                         </tr>
+                         )
+                         })
+                     }
+                     </tbody>
+                     </table>
+
+      ) : (
+        <table className="mt-2 table table-bordered is-striped is-fullwidth border-dark">
                     <thead className='kepalaTabel bg-primary' >
                         <tr>
                         <th className='f-tbl small'>No</th>
@@ -256,16 +367,11 @@ const handleDeleteAlert = () => {
                     }
                     </tbody>
                     </table>
-
-                </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" className="btn btn-primary">Save changes</button>
+      )}         
                 </div>
               </div>
             </div>
           </div>
-
       </div>
     </>
   )

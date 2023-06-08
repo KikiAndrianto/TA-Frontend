@@ -133,7 +133,7 @@ const Login = () => {
       </div>
       <form >
         <div className='form-login'>
-      <input type="text" className="form-control border rounded rounded-pill mt-3" placeholder='username dan email' onChange={(e) => setEmail(e.target.value)}/>
+      <input type="text" className="form-control border rounded rounded-pill mt-3" placeholder='email' onChange={(e) => setEmail(e.target.value)}/>
       <input type="password" className="form-control border rounded rounded-pill mt-3" placeholder='password' 
       value={password}onChange={(e) => setPassword(e.target.value)} />
       </div>

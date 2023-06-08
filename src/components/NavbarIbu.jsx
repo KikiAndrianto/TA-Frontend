@@ -5,9 +5,11 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 const NavbarIbu = () => {
+  AOS.init();
+  const user = localStorage.getItem("userName").replace(/["]/g, "");
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top"  data-aos="fade-down" data-aos-duration="800">
         <div className="container-fluid">
           <a className="navbar-brand" href="#">
             <img
@@ -52,12 +54,11 @@ const NavbarIbu = () => {
                   aria-expanded="false"
                 >
                   
-                  <small className="fw-bold">User Login</small>
+                  <small className="fw-bold">{user}</small>
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end animate slideIn">
-                  <a className="dropdown-item">Email</a>
-                  <Link className="dropdown-item">
-                     Login
+                  <Link className="dropdown-item" to={'/'}>
+                     Logout
                     </Link>
                 </ul>
               </li>

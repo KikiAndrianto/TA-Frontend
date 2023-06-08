@@ -23,7 +23,7 @@ const Register = () => {
       } else if (username.length < 4 || password.length < 6) {
         swal({
           icon: "error",
-          text: "Username minimal 4 kata dan Password minimal 6 kata!",
+          text: "Username minimal 4 karakter dan Password minimal 6 karakter!",
         });
       } else{
         swal({
@@ -76,7 +76,7 @@ const Register = () => {
       <input type="password" className="form-control border rounded rounded-pill mt-3" placeholder='password' onChange={(e) => setPassword(e.target.value)}/>
       </div>
       <div className='btn-login '>
-         <button className='btn-lgn btn btn-primary shadow border rounded rounded-pill' onClick={(e) => setUser(e.preventDefault())}>Login</button>
+         <button className='btn-lgn btn btn-primary shadow border rounded rounded-pill' onClick={(e) => setUser(e.preventDefault())}>Daftar</button>
       </div>
       <p className='text-center mt-3' >Sudah punya akun? Silahkan <Link className="text-primary" to={'/'}>Login</Link></p>
       </form>
