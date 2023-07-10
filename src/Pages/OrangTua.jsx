@@ -8,6 +8,7 @@ import Navbar from '../components/Navbar'
 import swal from 'sweetalert'
 import AOS from "aos";
 import "aos/dist/aos.css";
+import Footer from '../components/Footer';
 
 
 const OrangTua = () => {
@@ -39,7 +40,7 @@ const OrangTua = () => {
           icon: "error",
           text: "Data Tidak Boleh Kosong!",
         });
-      } else if (nikIbu.length < 16 || nikAyah.length < 16) {
+      } else if (nikIbu.length !== 16 || nikAyah.length !== 16) {
         swal({
           icon: "error",
           text: "NIK harus berjumlah 16 angka",
@@ -254,6 +255,7 @@ const OrangTua = () => {
         </div>
     </div>
     </div>
+    {/* <Footer /> */}
     </>
     
   )

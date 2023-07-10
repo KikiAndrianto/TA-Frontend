@@ -48,7 +48,7 @@ const Anak = () => {
         icon: "error",
         text: "Data Tidak Boleh Kosong!",
       });
-    } else if (nik.length < 16 ) {
+    } else if (nik.length !== 16 ) {
       swal({
         icon: "error",
         text: "NIK harus berjumlah 16 angka",

@@ -62,7 +62,6 @@ const Imunisasi = () => {
               setNama("")
               setTglLahir("")
               setIbu("")
-              setTglImunisasi("")
               setUsia("")
               setJenisVaksin("")
               setKeterangan("")

@@ -69,7 +69,6 @@ const Penimbangan = () => {
               setNama("")
               setTglLahir("")
               setIbu("")
-              setTglPeriksa("")
               setUsia("")
               setBeratBadan("")
               setTinggiBadan("")
@@ -139,107 +138,123 @@ const Penimbangan = () => {
             function checkStatus(e) {
               e.preventDefault();
               if ( usia === 0) {
-                if (bb >= 3.0 && bb <= 4.3 && tb >= 49 && tb <= 54 && lk >= 33 && lk <= 39) {
+                if (bb >= 3.0 && bb <= 4.3 && tb >= 49 && lk >= 33 && lk <= 39) {
                   setKeterangan('Sesuai')
-                } else if (bb < 3.0 || lk < 33) {
+                } else if (bb < 3.0 || lk < 33 || tb < 49) {
                   setKeterangan('Kurang');
                 } else if (bb > 4.3 || lk > 39) {
                   setKeterangan('Berlebihan');
                 }
               } else if ( usia === 1) {
-                if (bb >= 3.0 && bb <= 4.3 && tb >= 49 && tb <= 54 && lk >= 33 && lk <= 39) {
+                if (bb >= 3.0 && bb <= 4.3 && tb >= 49 && lk >= 33 && lk <= 39) {
                   setKeterangan('Sesuai')
-                } else if (bb < 3.0 || lk < 33) {
+                } else if (bb < 3.0 || lk < 33 || tb < 49) {
                   setKeterangan('Kurang');
                 } else if (bb > 4.3 || lk > 39) {
                   setKeterangan('Berlebihan');
                 }
               } else if (usia === 2) {
-                if (bb >= 3.6 && bb <= 5.2 && tb >= 52 && tb <= 58 && lk >= 35 && lk <= 41) {
+                if (bb >= 3.6 && bb <= 5.2 && tb >= 52 && lk >= 35 && lk <= 41) {
                   setKeterangan('Sesuai')
-                } else if (bb < 3.6 || lk < 35) {
+                } else if (bb < 3.6 || lk < 35 || tb < 52) {
                   setKeterangan('Kurang');
                 } else if (bb > 5.2 || lk > 41) {
                   setKeterangan('Berlebihan');
                 }
               } else if (usia === 3) {
-                if (bb >= 4.2 && bb <= 6.0 && tb >= 55 && tb <= 61 && lk >= 37 && lk <= 43) {
+                if (bb >= 4.2 && bb <= 6.0 && tb >= 55 && lk >= 37 && lk <= 43) {
                   setKeterangan('Sesuai')
-                } else if (bb < 4.2 || lk < 55) {
+                } else if (bb < 4.2 || lk < 37 || tb < 55) {
                   setKeterangan('Kurang');
                 } else if (bb > 6.0 || lk > 43) {
                   setKeterangan('Berlebihan');
                 }
               } else if (usia === 4) {
-                if (bb >= 4.7 && bb <= 6.7 && tb >= 57 && tb <= 63 && lk >= 38 && lk <= 44) {
+                if (bb >= 4.7 && bb <= 6.7 && tb >= 57 && lk >= 38 && lk <= 44) {
                   setKeterangan('Sesuai')
-                } else if (bb < 4.7 || lk < 38) {
+                } else if (bb < 4.7 || lk < 38 || tb < 57) {
                   setKeterangan('Kurang');
                 } else if (bb > 6.7 || lk > 44) {
                   setKeterangan('Berlebihan');
                 }
               } else if (usia === 5) {
-                if (bb >= 5.3 && bb <= 7.3 && tb >= 59.8 && tb <= 65.9 && lk >= 39 && lk <= 45) {
+                if (bb >= 5.3 && bb <= 7.3 && tb >= 59 && lk >= 39 && lk <= 45) {
                   setKeterangan('Sesuai')
-                } else if (bb < 5.3 || lk < 39) {
+                } else if (bb < 5.3 || lk < 39 || tb < 59) {
                   setKeterangan('Kurang');
                 } else if (bb > 7.3 || lk > 45) {
                   setKeterangan('Berlebihan');
                 }
               } else if (usia === 6) {
-                if (bb >= 5.8 && bb <= 7.8 && tb >= 61.6 && tb <= 67.8 && lk >= 40 && lk <= 46) {
+                if (bb >= 5.8 && bb <= 7.8 && tb >= 61 && lk >= 40 && lk <= 46) {
                   setKeterangan('Sesuai')
-                } else if (bb < 5.8 || lk < 40) {
+                } else if (bb < 5.8 || lk < 40 || tb < 61) {
                   setKeterangan('Kurang');
                 } else if (bb > 7.8 || lk > 46) {
                   setKeterangan('Berlebihan');
                 }
               } else if (usia === 7) {
-                if (bb >= 6.2 && bb <= 8.3 && tb >= 63.2 && tb <= 69.5 && lk >= 40.5 && lk <= 46.5) {
+                if (bb >= 6.2 && bb <= 8.3 && tb >= 63 && lk >= 40.5 && lk <= 46.5) {
                   setKeterangan('Sesuai')
-                } else if (bb < 6.2 || lk < 40.5) {
+                } else if (bb < 6.2 || lk < 40.5 || tb < 63) {
                   setKeterangan('Kurang');
                 } else if (bb > 8.3 || lk > 46.5) {
                   setKeterangan('Berlebihan');
                 }
               } else if (usia === 8) {
-                if (bb >= 6.6 && bb <= 8.8 && tb >= 64.6 && tb <= 71.0 && lk >= 41.5 && lk <= 47.5) {
+                if (bb >= 6.6 && bb <= 8.8 && tb >= 64.6 && lk >= 41.5 && lk <= 47.5) {
                   setKeterangan('Sesuai')
-                } else if (bb < 6.6 || lk < 41.5) {
+                } else if (bb < 6.6 || lk < 41.5 || tb < 64.6) {
                   setKeterangan('Kurang');
                 } else if (bb > 8.8 || lk > 47.5) {
                   setKeterangan('Berlebihan');
                 }
               } else if (usia === 9) {
-                if (bb >= 7.0 && bb <= 9.2 && tb >= 66.0 && tb <= 72.3 && lk >= 42 && lk <= 48) {
+                if (bb >= 7.0 && bb <= 9.2 && tb >= 66 && lk >= 42 && lk <= 48) {
                   setKeterangan('Sesuai')
-                } else if (bb < 7.0 || lk < 42) {
+                } else if (bb < 7.0 || lk < 42 || tb < 66) {
                   setKeterangan('Kurang');
                 } else if (bb > 9.2 || lk > 48) {
                   setKeterangan('Berlebihan');
                 }
               } else if (usia === 10) {
-                if (bb >= 7.3 && bb <= 9.5 && tb >= 67.2 && tb <= 73.6 && lk >= 42.5 && lk <= 48.5) {
+                if (bb >= 7.3 && bb <= 9.5 && tb >= 67.2 && lk >= 42.5 && lk <= 48.5) {
                   setKeterangan('Sesuai')
-                } else if (bb < 7.3 || lk < 42.5) {
+                } else if (bb < 7.3 || lk < 42.5 || 67.2) {
                   setKeterangan('Kurang');
                 } else if (bb > 9.5 || lk > 48.5) {
                   setKeterangan('Berlebihan');
                 }
               } else if (usia === 11) {
-                if (bb >= 7.6 && bb <= 9.9 && tb >= 68.5 && tb <= 74.9 && lk >= 43 && lk <= 49) {
+                if (bb >= 7.6 && bb <= 9.9 && tb >= 68.5 && lk >= 43 && lk <= 49) {
                   setKeterangan('Sesuai')
-                } else if (bb < 7.6 || lk < 43) {
+                } else if (bb < 7.6 || lk < 43 || tb < 68.5) {
                   setKeterangan('Kurang');
                 } else if (bb > 9.9 || lk > 49) {
                   setKeterangan('Berlebihan');
                 }
               } else if (usia === 12) {
-                if (bb >= 7.8 && bb <= 10.2 && tb >= 69.6 && tb <= 76.1 && lk >= 43.5 && lk <= 49.5) {
+                if (bb >= 7.8 && bb <= 10.2 && tb >= 69.6 && lk >= 43.5 && lk <= 49.5) {
                   setKeterangan('Sesuai')
-                } else if (bb < 7.8 || lk < 43.5) {
+                } else if (bb < 7.8 || lk < 43.5 || tb < 69.6) {
                   setKeterangan('Kurang');
                 } else if (bb > 10.2 || lk > 49.5) {
+                  setKeterangan('Berlebihan');
+                }
+              } else if (usia >= 13 && usia <= 18) {
+                if (bb >= 8 && bb <= 10.5 && tb >= 70.6 && lk >= 44 && lk <= 50) {
+                  setKeterangan('Sesuai')
+                } else if (bb < 8 || lk < 44 || tb < 70.6) {
+                  setKeterangan('Kurang');
+                } else if (bb > 10.5 || lk > 50) {
+                  setKeterangan('Berlebihan');
+                }
+              } else if (usia >= 19 && usia <= 24) {
+                if (bb >= 9.0 && bb <= 13.0 && tb >= 79.3 && lk >= 45 && lk <= 51) {
+                  setKeterangan('Sesuai')
+                } else if (bb < 9 || lk < 45 || tb < 79.3) {
+                  setKeterangan('Kurang');
+                } else if (bb > 13 || lk > 51) {
                   setKeterangan('Berlebihan');
                 }
               }               

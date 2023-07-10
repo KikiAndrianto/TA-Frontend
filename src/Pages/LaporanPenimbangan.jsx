@@ -32,8 +32,9 @@ const LaporanPenimbangan = () => {
           const imgData = canvas.toDataURL('image/png');
           const pdf = new jsPDF();
           const today = new Date();
-          const dateString = today.toLocaleDateString(); 
-    
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        const dateString = today.toLocaleDateString('en-GB', options);
+      
           pdf.setFont('Times New Roman')
           pdf.setPage(1);
           // pdf.addImage('https://1.bp.blogspot.com/-7q_IogOnUHo/YNHgD0ioCSI/AAAAAAAAInM/MXO6tYZM5J0PGzV7a9Wa6oJMaRRuxHD6gCLcBGAsYHQ/s16000/logo-posyandu.png', 

@@ -117,6 +117,11 @@ const Navbar = () => {
                   </li>
                 </ul>
               </li>
+              {/* <li className="nav-item ms-3">
+                <Link className="menu-nav nav-link active fw-bold text-decoration-none" to={'/AdminCekData'}>
+                  Cek Data
+                </Link>
+              </li> */}
             </ul>
             <form className="d-flex">
             <div className="navbar-nav responsive-hide">

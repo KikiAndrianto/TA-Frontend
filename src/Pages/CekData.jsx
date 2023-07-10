@@ -29,7 +29,7 @@ const CekData = () => {
       .then((result) => {
         const dataAnak = result.data
         setAnaks(dataAnak.data)
-     }).catch((err) => {
+     }).catch((err) => { 
         console.log(err);
      });
     }

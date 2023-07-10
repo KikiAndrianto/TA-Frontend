@@ -25,6 +25,7 @@ import LaporanOrtu from './Pages/LaporanOrtu'
 import LaporanPetugas from './Pages/LaporanPetugas'
 import LaporanPenimbangan from './Pages/LaporanPenimbangan'
 import LaporanImunisasi from './Pages/LaporanImunisasi'
+import AdminCekData from './Pages/AdminCekData'
 
 function App() {
 
@@ -53,7 +54,7 @@ function App() {
       <Route path='/laporanPetugas' element={<LaporanPetugas />}/>
       <Route path='/laporanPenimbangan' element={<LaporanPenimbangan />}/>
       <Route path='/laporanImunisasi' element={<LaporanImunisasi />}/>
-      {/* <Route path='/cekHasil/formHasil/:id' element={<FormHasil />}/> */}
+      <Route path='/AdminCekData' element={<AdminCekData />}/>
     </Routes>
     {/* <Footer /> */}
     </BrowserRouter>

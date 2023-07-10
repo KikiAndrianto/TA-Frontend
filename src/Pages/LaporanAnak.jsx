@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import moment from 'moment';
 
 
 const LaporanAnak = () => {
@@ -34,7 +35,8 @@ const LaporanAnak = () => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF();
       const today = new Date();
-      const dateString = today.toLocaleDateString(); 
+      const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+      const dateString = today.toLocaleDateString('en-GB', options);
 
       pdf.setFont('Times New Roman')
       pdf.setPage(1);
