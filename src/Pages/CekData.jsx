@@ -6,8 +6,17 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 const CekData = () => {
-    const [cariNik, setCariNik] = useState("")
+    const [ortus, setOrtus] = useState([])
     const [anaks, setAnaks] = useState([])
+
+    // untuk ortu
+    const [namaIbu, setNamaIbu] = useState('')
+    const [namaAyah, setNamaAyah] = useState('')
+    const [nikAyah, setNikAyah] = useState('')
+    const [noTlp, setNoTlp] = useState('')
+    const [alamat, setAlamat] = useState('')
+    const [nikIbus, setNikIbus] = useState('')
+
 
     const [penimbangan, setPenimbangan] = useState([])
     const [imunisasi, setImunisasi] = useState([])
@@ -16,16 +25,19 @@ const CekData = () => {
     const [hasilPenimbangan, sethasilPenimbangan] = useState([]);
     const [hasilImunisasi, sethasilImunisasi] = useState([]);
 
+    const nikIbu = localStorage.getItem("userEmail").replace(/["]/g, "");
+
     AOS.init();
 
     useEffect(() => {
         getAnak();
         getPenimbangan();
         getImunisasi();
+        getOrtuByNikIbu();
       },[])
 
     const getAnak = () => {
-      axios.get('http://localhost:3000/anak')
+      axios.get(`http://localhost:3000/anak/nikIbu/${nikIbu}`)
       .then((result) => {
         const dataAnak = result.data
         setAnaks(dataAnak.data)
@@ -34,8 +46,28 @@ const CekData = () => {
      });
     }
 
+    const getOrtuByNikIbu = () => {
+      axios.get(`http://localhost:3000/ortu/ByNik/${nikIbu}`)
+      .then((result) => {
+        const dataOrtu = result.data
+        console.log(dataOrtu);
+        setOrtus(dataOrtu.data)
+        setNamaIbu(dataOrtu.data.namaIbu)
+        setNikIbus(dataOrtu.data.nikIbu)
+        setNamaAyah(dataOrtu.data.namaAyah)
+        setNikAyah(dataOrtu.data.nikAyah)
+        setAlamat(dataOrtu.data.alamat)
+        setNoTlp(dataOrtu.data.notlp)
+     }).catch((err) => { 
+        console.log(err);
+     });
+    }
+
+    console.log(namaIbu);
+
+  
      const getPenimbangan = () => {
-        axios.get('http://localhost:3000/penimbangan')
+        axios.get(`http://localhost:3000/penimbangan/nikIbu/${nikIbu}`)
         .then((result) => {
           const dataPenimbangan = result.data
           setPenimbangan(dataPenimbangan.data)
@@ -44,8 +76,10 @@ const CekData = () => {
        });
       }
 
+      console.log(penimbangan);
+
       const getImunisasi = () => {
-        axios.get('http://localhost:3000/imunisasi')
+        axios.get(`http://localhost:3000/imunisasi/nikIbu/${nikIbu}`)
         .then((result) => {
           const dataImunisasi = result.data
           setImunisasi(dataImunisasi.data)
@@ -53,37 +87,24 @@ const CekData = () => {
           console.log(err);
        });
       }
-
-      console.log(imunisasi);
     
     const cariData = (e) => {
         e.preventDefault();
-        if (cariNik === "") {
-          swal({
-            icon: "error",
-            text: "Data Tidak Boleh Kosong!",
-          });
-        } else if (cariNik.length < 16 ) {
-          swal({
-            icon: "error",
-            text: "NIK harus berjumlah 16 angka",
-          });
-        } else{
-           if (cariNik.trim() !== '') {
+           if (nikIbu.trim() !== '') {
           const hasilAnak = anaks.filter(
             row =>
-              row.nama.toLowerCase().includes(cariNik.toLowerCase()) ||
-              row.nik.includes(cariNik)
+              row.Ortu.nikIbu.toLowerCase().includes(nikIbu.toLowerCase()) ||
+              row.nik.includes(nikIbu)
           );
 
           const hasilPenimbangan = penimbangan.filter(
             row =>
-              row.Anak.nik.toLowerCase().includes(cariNik.toLowerCase())
+              row.nikIbu.toLowerCase().includes(nikIbu.toLowerCase())
           );
 
           const hasilImunisasi = imunisasi.filter(
             row =>
-              row.Anak.nik.toLowerCase().includes(cariNik.toLowerCase())
+              row.nikIbu.toLowerCase().includes(nikIbu.toLowerCase())
           );
           sethasilPenimbangan(hasilPenimbangan);
           setHasilAnak(hasilAnak);
@@ -93,26 +114,19 @@ const CekData = () => {
           sethasilPenimbangan([]);
           setImunisasi([]);
         }
-        }
-       
         };
 
-        console.log(hasilAnak);
+
+
 
   return (
     <>
     <NavbarIbu />
       <h2 className='judul fw-bolder ms-4' data-aos="fade-right" data-aos-duration="800">Cek Data Anak</h2>
     <div className='' data-aos="fade-right" data-aos-duration="800">
-        <form>
-          <div className='form-cek mt-3'>
-            <label  className="form-label">Untuk mengecek data Masukkan NIK anak</label>
-            <input type="text" className="form-control" placeholder='Masukkan NIK' value={cariNik} onChange={(e) => setCariNik(e.target.value)}/>
-            <button onClick={cariData} className='btn btn-primary shadow mt-2'>Cek</button>
-            </div>
-        </form>
+       
     </div>
-    {hasilAnak.length > 0 ? (
+    
     <div className='mt-3 ms-4' data-aos="fade-right" data-aos-duration="800">
         <label className='mb-1 fw-bold'>Tabel Data Anak</label>
         <div className='tabel-cek table-responsive'>
@@ -129,7 +143,8 @@ const CekData = () => {
             </tr>
         </thead>
         <tbody>
-           {hasilAnak.map((row, index) => (
+           {
+            anaks.map((row, index) => (
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{row.nama}</td>
@@ -144,11 +159,7 @@ const CekData = () => {
         </table>
         </div>
       </div>
-       ) : (
-        <p></p>
-      )}
-
-{hasilAnak.length > 0 ? (
+    
       <div className='mt-3 ms-4'>
         <label className='mb-1 fw-bold'>Tabel Data Orang Tua</label>
         <div className='tabel-cek table-responsive'>
@@ -165,29 +176,20 @@ const CekData = () => {
             </tr>
         </thead>
         <tbody>
-          {hasilAnak.map((row, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{row.Ortu.namaIbu}</td>
-                  <td>{row.Ortu.nikIbu}</td>
-                  <td>{row.Ortu.namaAyah}</td>
-                  <td>{row.Ortu.nikAyah}</td>
-                  <td>{row.Ortu.alamat}</td>
-                  <td>{row.Ortu.notlp}</td>
-                </tr>
-              ))}
+          <tr>
+            <th className='f-tbl small'>1</th>
+            <th className='f-tbl small'>{nikIbus}</th>
+            <th className='f-tbl small'>{nikIbus}</th>
+            <th className='f-tbl small'>{namaAyah}</th>
+            <th className='f-tbl small'>{nikAyah}</th>
+            <th className='f-tbl small'>{alamat}</th>
+            <th className='f-tbl small'>{noTlp}</th>
+          </tr>
         </tbody>
         </table>
         </div>
-        
       </div>
 
-      ) : (
-        <p className='ms-4' data-aos="fade-right" data-aos-duration="800">Data Tidak Di Temukan</p>
-      )}
-
-
-    {hasilPenimbangan.length > 0 ? (
       <div className=' mt-3 ms-4'>
         <label className='mb-1 fw-bold'>Tabel Data Penimbangan</label>
         <div className='panjang-tabel tabel-cek table-responsive'>
@@ -207,31 +209,26 @@ const CekData = () => {
             </tr>
         </thead>
         <tbody>
-          {hasilPenimbangan.map((row, index) => (
+          {
+            penimbangan.map((penimbangan, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td>{row.Anak.nama}</td>
-                  <td>{row.Anak.tglLahir}</td>
-                  <td>{row.ibu}</td>
-                  <td>{row.tglPeriksa}</td>
-                  <td>{row.usia}</td>
-                  <td>{row.bb}</td>
-                  <td>{row.tb}</td>
-                  <td>{row.lk}</td>
-                  <td>{row.keterangan}</td>
+                  <td>{penimbangan.Anak.nama}</td>
+                  <td>{penimbangan.Anak.tglLahir}</td>
+                  <td>{penimbangan.ibu}</td>
+                  <td>{penimbangan.tglPeriksa}</td>
+                  <td>{penimbangan.usia}</td>
+                  <td>{penimbangan.bb}</td>
+                  <td>{penimbangan.tb}</td>
+                  <td>{penimbangan.lk}</td>
+                  <td>{penimbangan.keterangan}</td>
                 </tr>
               ))}
         </tbody>
         </table>
-        </div>
-        
+        </div>  
       </div>
 
-      ) : (
-        <p></p>
-      )}
-
-{hasilImunisasi.length > 0 ? (
       <div className='mt-3 ms-4'>
         <label className='mb-1 fw-bold'>Tabel Data Imunisasi</label>
         <div className='panjang-tabel tabel-cek table-responsive'>
@@ -249,27 +246,29 @@ const CekData = () => {
             </tr>
         </thead>
         <tbody>
-          {hasilImunisasi.map((row, index) => (
+          {
+            imunisasi.map((imunisasi, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td>{row.Anak.nama}</td>
-                  <td>{row.Anak.tglLahir}</td>
-                  <td>{row.ibu}</td>
-                  <td>{row.tglImunisasi}</td>
-                  <td>{row.usia}</td>
-                  <td>{row.jenisVaksin}</td>
-                  <td>{row.keterangan}</td>
+                  <td>{imunisasi.Anak.nama}</td>
+                  <td>{imunisasi.Anak.tglLahir}</td>
+                  <td>{imunisasi.ibu}</td>
+                  <td>{imunisasi.tglImunisasi}</td>
+                  <td>{imunisasi.usia}</td>
+                  <td>{imunisasi.jenisVaksin}</td>
+                  <td>{imunisasi.keterangan}</td>
                 </tr>
-              ))}
+              ))
+          }
         </tbody>
         </table>
         </div>
         
       </div>
 
-      ) : (
+      {/* ) : (
         <p></p>
-      )}
+      )} */}
     </>
   )
 }

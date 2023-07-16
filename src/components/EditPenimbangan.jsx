@@ -10,6 +10,8 @@ const EditPenimbangan = () => {
     const [nama, setNama] = useState("")
     const [tglLahir, setTglLahir] = useState("")
     const [ibu, setIbu] = useState("")
+    const [nikIbu, setNikIbu] = useState("")
+
 
     const [anak, setAnak] = useState([]);
     const [AnakId, setAnakId] = useState("")
@@ -78,6 +80,7 @@ const EditPenimbangan = () => {
           setTglPeriksa(new Date(response.data.data.tglPeriksa));
           setUsia(response.data.data.usia);
           setBeratBadan(response.data.data.bb);
+          setNikIbu(response.data.data.nikIbu);
           setTinggiBadan(response.data.data.tb);
           setLingkarKepala(response.data.data.lk);
           setKeterangan(response.data.data.keterangan);
@@ -241,6 +244,10 @@ const EditPenimbangan = () => {
                 <div className="mb-2">
                     <label className="form-label" >Nama IBu</label>
                     <input type="text" className="form-control" value={ibu} onChange={(e) => setIbu(e.target.value)}/>
+                </div>
+                <div className="mb-2">
+                    <label className="form-label" >NIK IBu</label>
+                    <input type="text" className="form-control" value={nikIbu} onChange={(e) => setNikIbu(e.target.value)}/>
                 </div>
                 <div className="mb-2 mt-5">
                     <label className="form-label" >Tanggal Lahir</label>

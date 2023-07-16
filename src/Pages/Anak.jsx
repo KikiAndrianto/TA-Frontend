@@ -229,7 +229,7 @@ const cariData = (e) => {
               <th className='f-tbl small'>Tempat Lahir</th>
               <th className='f-tbl small'>Tanggal Lahir</th>
               <th className='f-tbl small'>Jenis Kelamin</th>
-              <th className='f-tbl small'>Nama Ibu</th>
+              <th className='f-tbl small'>Nik Ibu</th>
               <th className='f-tbl small'>Aksi</th>
               </tr>
           </thead>
@@ -244,7 +244,7 @@ const cariData = (e) => {
                     <th className='f-tbl small'>{row.tempatLhr}</th>
                     <th className='f-tbl small'>{row.tglLahir}</th>
                     <th className='f-tbl small'>{row.jk}</th>
-                    <th className='f-tbl small'>{row.Ortu.namaIbu}</th>
+                    <th className='f-tbl small'>{row.Ortu.nikIbu}</th>
                     <th className='f-tbl small'>
                     <Link to={`editAnak/${row.id}`} className='tombol-edit button is-small is-info mr-2'><AiOutlineEdit /></Link>
                         <button onClick={() => {deleteAnak (row.id); handleDeleteAlert(); window.location.reload()}} className='button text-white is-small bg-danger mt-1'><RiDeleteBin6Line /></button>
@@ -266,7 +266,7 @@ const cariData = (e) => {
             <th className='f-tbl small'>Tempat Lahir</th>
             <th className='f-tbl small'>Tanggal Lahir</th>
             <th className='f-tbl small'>Jenis Kelamin</th>
-            <th className='f-tbl small'>Nama Ibu</th>
+            <th className='f-tbl small'>Nik Ibu</th>
             <th className='f-tbl small'>Aksi</th>
             </tr>
         </thead>
@@ -281,7 +281,7 @@ const cariData = (e) => {
                   <th className='f-tbl small'>{anak.tempatLhr}</th>
                   <th className='f-tbl small'>{anak.tglLahir}</th>
                   <th className='f-tbl small'>{anak.jk}</th>
-                  <th className='f-tbl small'>{anak.Ortu.namaIbu}</th>
+                  <th className='f-tbl small'>{anak.Ortu.nikIbu}</th>
                   <th className='f-tbl small'>
                   <Link to={`editAnak/${anak.id}`} className='tombol-edit button is-small is-info mr-2'><AiOutlineEdit /></Link>
                       <button onClick={() => {deleteAnak (anak.id); handleDeleteAlert()}} className='button text-white is-small bg-danger mt-1'><RiDeleteBin6Line /></button>
@@ -318,8 +318,8 @@ const cariData = (e) => {
                          <tr>
                          <th className='f-tbl small'>No</th>
                          <th className='f-tbl small'>Nama</th>
+                         <th className='f-tbl small'>Nik</th>
                          <th className='f-tbl small'>Alamat</th>
-                         <th className='f-tbl small'>No Telepon</th>
                          <th className='f-tbl small'>Aksi</th>
                          </tr>
                      </thead>
@@ -330,8 +330,8 @@ const cariData = (e) => {
                              <tr key={row.id}>
                              <th className='f-tbl small'>{index + 1}</th>
                              <th className='f-tbl small'>{row.namaIbu}</th>
+                             <th className='f-tbl small'>{row.nikIbu}</th>
                              <th className='f-tbl small'>{row.alamat}</th>
-                             <th className='f-tbl small'>{row.notlp}</th>
                              <th><button className='btn btn-primary' onFocus={() => setOrtuId(row.id)} onClick={getOrtuById} data-bs-dismiss="modal">Pilih</button></th>
                          </tr>
                          )
@@ -346,8 +346,8 @@ const cariData = (e) => {
                         <tr>
                         <th className='f-tbl small'>No</th>
                         <th className='f-tbl small'>Nama</th>
+                        <th className='f-tbl small'>Nik Ibu</th>
                         <th className='f-tbl small'>Alamat</th>
-                        <th className='f-tbl small'>No Telepon</th>
                         <th className='f-tbl small'>Aksi</th>
                         </tr>
                     </thead>
@@ -358,8 +358,8 @@ const cariData = (e) => {
                             <tr key={ortu.id}>
                             <th className='f-tbl small'>{index + 1}</th>
                             <th className='f-tbl small'>{ortu.namaIbu}</th>
+                            <th className='f-tbl small'>{ortu.nikIbu}</th>
                             <th className='f-tbl small'>{ortu.alamat}</th>
-                            <th className='f-tbl small'>{ortu.notlp}</th>
                             <th><button className='btn btn-primary' onFocus={() => setOrtuId(ortu.id)} onClick={getOrtuById} data-bs-dismiss="modal">Pilih</button></th>
                         </tr>
                         )

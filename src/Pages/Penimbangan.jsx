@@ -21,6 +21,7 @@ const Penimbangan = () => {
     const [nama, setNama] = useState("")
     const [tglLahir, setTglLahir] = useState("")
     const [ibu, setIbu] = useState("")
+    const [nikIbu, setNikIbu] = useState("")
 
     const [anak, setAnak] = useState([]);
     const [AnakId, setAnakId] = useState("")
@@ -58,6 +59,7 @@ const Penimbangan = () => {
               await axios.post('http://localhost:3000/penimbangan', {
                 AnakId,
                 ibu,
+                nikIbu,
                 tglPeriksa,
                 usia,
                 bb,
@@ -68,6 +70,7 @@ const Penimbangan = () => {
               getPenimbangan()
               setNama("")
               setTglLahir("")
+              setNikIbu("")
               setIbu("")
               setUsia("")
               setBeratBadan("")
@@ -107,6 +110,7 @@ const Penimbangan = () => {
             setNama(response.data.data.nama);
             setTglLahir(new Date(response.data.data.tglLahir));
             setIbu(response.data.data.Ortu.namaIbu)
+            setNikIbu(response.data.data.Ortu.nikIbu)
         }
 
         const deletePenimbangan = async (id) => {
@@ -317,6 +321,10 @@ const Penimbangan = () => {
                     <label className="form-label" >Nama IBu</label>
                     <input type="text" className="form-control" value={ibu} onChange={(e) => setIbu(e.target.value)}/>
                 </div>
+                <div className="mb-2">
+                    <label className="form-label" >NIK IBu</label>
+                    <input type="text" className="form-control" value={nikIbu} onChange={(e) => setNikIbu(e.target.value)}/>
+                </div>
                 <div className="mb-2 mt-5">
                     <label className="form-label" >Tanggal Penimbangan</label>
                     <DatePicker
@@ -329,19 +337,19 @@ const Penimbangan = () => {
                     />
                 </div>
                 <div className="mb-2">
-                    <label className="form-label">Usia</label>
+                    <label className="form-label">Usia (Bulan)</label>
                     <div className='d-flex'>
                       <input type="text" className="form-control" value={usia} onChange={(e) => setUsia(e.target.value)}/>
                     </div>
                     
                 </div><div className="mb-2">
-                    <label className="form-label">Berat Badan (BB)</label>
+                    <label className="form-label">Berat Badan (Kg)</label>
                     <input type="text" className="form-control" value={bb} onChange={(e) => setBeratBadan(e.target.value)}/>
                 </div><div className="mb-2">
-                    <label className="form-label">Tinggi Badan (TB)</label>
+                    <label className="form-label">Tinggi Badan (Cm)</label>
                     <input type="text" className="form-control" value={tb} onChange={(e) => setTinggiBadan(e.target.value)}/>
                 </div><div className="mb-2">
-                    <label className="form-label">Lingkar Kepala (LK)</label>
+                    <label className="form-label">Lingkar Kepala (Cm)</label>
                     <input type="text" className="form-control" value={lk} onChange={(e) => setLingkarKepala(e.target.value)}/>
                 </div><div className="mb-3">
                     <label className="form-label">Keterangan</label>
@@ -442,7 +450,7 @@ const Penimbangan = () => {
               <label className='mt-2 fw-bold'>Tabel Data Penimbangan</label>
             </div>
             <div className='d-flex'>
-            <input type="text" className=" form-control" placeholder='Cari nama petugas' value={cariNamaPenimbangan} onChange={(e) => setCariNamaPenimbangan(e.target.value)} />
+            <input type="text" className=" form-control" placeholder='Cari nama anak' value={cariNamaPenimbangan} onChange={(e) => setCariNamaPenimbangan(e.target.value)} />
               <button onClick={cariDataPenimbangan} className='btn bg-primary text-white ms-2'>Cari</button>
             </div>
           </div>
@@ -456,6 +464,7 @@ const Penimbangan = () => {
                       <th className='f-tbl small'>Nama Anak</th>
                       <th className='f-tbl small'>Tanggal Lahir</th>
                       <th className='f-tbl small'>Nama Ibu</th>
+                      <th className='f-tbl small'>NIK Ibu</th>
                       <th className='f-tbl small'>Tanggal Penimbangan</th>
                       <th className='f-tbl small'>usia (bulan)</th>
                       <th className='f-tbl small'>Berat Badan</th>
@@ -499,6 +508,7 @@ const Penimbangan = () => {
                     <th className='f-tbl small'>Nama Anak</th>
                     <th className='f-tbl small'>Tanggal Lahir</th>
                     <th className='f-tbl small'>Nama Ibu</th>
+                    <th className='f-tbl small'>NIK Ibu</th>
                     <th className='f-tbl small'>Tanggal Penimbangan</th>
                     <th className='f-tbl small'>usia (bulan)</th>
                     <th className='f-tbl small'>Berat Badan</th>
@@ -517,6 +527,7 @@ const Penimbangan = () => {
                         <th className='f-tbl small'>{penimbangan.Anak.nama}</th>
                         <th className='f-tbl small'>{penimbangan.Anak.tglLahir}</th>
                         <th className='f-tbl small'>{penimbangan.ibu}</th>
+                        <th className='f-tbl small'>{penimbangan.nikIbu}</th>
                         <th className='f-tbl small'>{penimbangan.tglPeriksa}</th>
                         <th className='f-tbl small'>{penimbangan.usia}</th>
                         <th className='f-tbl small'>{penimbangan.bb} kg</th>

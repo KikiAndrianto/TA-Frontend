@@ -9,8 +9,9 @@ const EditImunisasi = () => {
     const [nama, setNama] = useState("")
     const [tglLahir, setTglLahir] = useState("")
     const [ibu, setIbu] = useState("")
-    const [tglImunisasi, setTglImunisasi] = useState(new Date())
+    const [tglImunisasi, setTglImunisasi] = useState("")
     const [jenisVaksin, setJenisVaksin] = useState("")
+    const [nikIbu, setNikIbu] = useState("")
     const [usia, setUsia] = useState("")
     const [keterangan, setKeterangan] = useState("")
 
@@ -29,6 +30,7 @@ const EditImunisasi = () => {
               AnakId,
               ibu,
               tglImunisasi,
+              nikIbu,
               usia,
               jenisVaksin,
               keterangan
@@ -58,7 +60,8 @@ const EditImunisasi = () => {
       const getAnakuById = async () => {
         const response = await axios.get(`http://localhost:3000/anak/${AnakId}`)
             setNama(response.data.data.nama);
-            setTglLahir(response.data.data.tglLahir)
+            // setTglLahir(response.data.data.tglLahir)
+          setTglLahir(new Date(response.data.data.tglLahir));
             setIbu(response.data.data.Ortu.namaIbu)
       }
 
@@ -69,6 +72,7 @@ const EditImunisasi = () => {
           setTglLahir(new Date(response.data.data.Anak.tglLahir));
           setIbu(response.data.data.ibu);
           setTglImunisasi(new Date(response.data.data.tglImunisasi));
+          setNikIbu(response.data.data.nikIbu);
           setUsia(response.data.data.usia);
           setJenisVaksin(response.data.data.jenisVaksin);
           setKeterangan(response.data.data.keterangan);
@@ -105,11 +109,16 @@ const EditImunisasi = () => {
                     <label className="form-label">Nama IBu</label>
                     <input type="text" className="form-control" value={ibu} onChange={(e) => setIbu(e.target.value)}/>
                 </div>
+
+                <div className="mb-2">
+                    <label className="form-label">NIK IBu</label>
+                    <input type="text" className="form-control" value={nikIbu} onChange={(e) => setNikIbu(e.target.value)}/>
+                </div>
                 
                 <div className="mb-2 mt-5">
-                    <label className="form-label" >Tanggal Lahir</label>
+                    <label className="form-label" >Tanggal Imunisasi</label>
                     <DatePicker
-                        dateFormat="yyyy-MM-dd"
+                        dateFormat="dd/MM/yyyy"
                         id="date-input"
                         selected={tglImunisasi}
                         onChange={(data) => setTglImunisasi(data)}

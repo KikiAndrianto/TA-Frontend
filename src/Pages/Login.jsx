@@ -133,7 +133,7 @@ const Login = () => {
       </div>
       <form >
         <div className='form-login'>
-      <input type="text" className="form-control border rounded rounded-pill mt-3" placeholder='email' onChange={(e) => setEmail(e.target.value)}/>
+      <input type="text" className="form-control border rounded rounded-pill mt-3" placeholder='nik' onChange={(e) => setEmail(e.target.value)}/>
       <input type="password" className="form-control border rounded rounded-pill mt-3" placeholder='password' 
       value={password}onChange={(e) => setPassword(e.target.value)} />
       </div>
@@ -141,7 +141,7 @@ const Login = () => {
          <button className='btn-lgn btn btn-primary shadow border rounded rounded-pill'
          onClick={(e) => isEmail(e.preventDefault())} >Login</button>
       </div>
-      <p className='text-center mt-3' >Belum punya akun? Silahkan <Link className="text-primary" to={"/register"}>Daftar</Link></p>
+      <p className='text-center mt-3' >Masukkan NIK ibu dan password yang telah di berikan oleh petugas</p>
       </form>
       </div>
 

@@ -67,12 +67,12 @@ const Navbar = () => {
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li>
                     <Link className="dropdown-item" to={'/penimbangan'}>
-                      Data Penimbangan
+                       Penimbangan
                     </Link>
                   </li>
                   <li>
                     <Link className="dropdown-item" to={'/imunisasi'}>
-                      Data Imunisasi
+                       Imunisasi
                     </Link>
                   </li>
                 </ul>

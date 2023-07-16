@@ -31,10 +31,12 @@ const OrangTua = () => {
     // menampung id dari button edit
     const [id, setId] = useState();
 
+    const [password, setPassword] = useState("");
+
     AOS.init();
 
-    const saveOrtu = async (e) => {
-      e.preventDefault();
+    const saveOrtu = async () => {
+    //   e.preventDefault();
       if (namaIbu === "" || namaAyah === "" || nikIbu === "" || nikAyah === "" || alamat === "" || notlp === "") {
         swal({
           icon: "error",
@@ -58,7 +60,8 @@ const OrangTua = () => {
                 namaAyah,
                 nikAyah,
                 alamat,
-                notlp
+                notlp,
+                password
             });
             getOrtu()
             setnamaIbu("")
@@ -67,6 +70,7 @@ const OrangTua = () => {
             setnikAyah("")
             setAlamat("")
             setNotlp("")
+            setPassword("")
         } catch (error) {
             console.log(error);
         }
@@ -101,13 +105,13 @@ const OrangTua = () => {
         }
     }
 
-    const handleAddAlert = () => {
-        swal({
-            title: "Sekses",
-            text: "Data Berhasil di tambahkan",
-            icon: "success",
-          });
-    }
+    // const handleAddAlert = () => {
+    //     swal({
+    //         title: "Sekses",
+    //         text: "Data Berhasil di tambahkan",
+    //         icon: "success",
+    //       });
+    // }
 
     const handleDeleteAlert = () => {
         swal({
@@ -130,6 +134,46 @@ const OrangTua = () => {
         }
         };
 
+        const setUser = async () => {
+              let regis = {
+              email: nikIbu,
+              username: namaIbu,
+              password: password,
+              };
+      
+              try {
+                const user = await axios.post(
+                  "http://localhost:3000/user/register",
+                  regis,
+                  {
+                    headers: {
+                      Accept: "*/*",
+                      "Content-Type": "application/json",
+                    },
+                  }
+                );
+                console.log(user.data);
+              } catch (error) {
+                console.log(error);
+                swal({
+                  icon: "error",
+                  text: "Username atau Email sudah digunakan!",
+                });
+              }
+            // }
+          }
+          
+          const submit = (e) => {
+            e.preventDefault();
+            saveOrtu()
+              .then(() => {
+                setUser();
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+          };
+
   return (
     <>
     <Navbar />
@@ -137,7 +181,7 @@ const OrangTua = () => {
     <div className='ortu d-flex row container-fluid'>
         
         <div className='form ms-3 col-md-4' data-aos="fade-right" data-aos-duration="800">
-        <form onSubmit={saveOrtu}>
+        <form onSubmit={submit}>
             <div className="mb-2 mt-3">
             <label  className="form-label">Nama Ibu</label>
             <input type="text" className="form-control"  value={namaIbu} onChange={(e) => setnamaIbu(e.target.value)}/>
@@ -158,6 +202,9 @@ const OrangTua = () => {
             </div><div className="mb-3">
                 <label className="form-label">No Hp</label>
                 <input type="text" className="form-control" value={notlp} onChange={(e) => setNotlp(e.target.value)}/>
+            </div><div className="mb-3">
+                <label className="form-label">Password</label>
+                <input type="text" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)}/>
             </div>
             <button type="submit" onClick={() => getOrtu} className="btn btn-primary">Submit</button>
             
@@ -188,6 +235,7 @@ const OrangTua = () => {
                 <th className='f-tbl small'>Nik Ayah</th>
                 <th className='f-tbl small'>Alamat</th>
                 <th className='f-tbl small'>No Hp</th>
+                <th className='f-tbl small'>Password</th>
                 <th className='f-tbl small'>Action</th>
                 </tr>
             </thead>
@@ -203,6 +251,7 @@ const OrangTua = () => {
                         <th className='f-tbl small'>{row.nikAyah}</th>
                         <th className='f-tbl small'>{row.alamat}</th>
                         <th className='f-tbl small'>{row.notlp}</th>
+                        <th className='f-tbl small'>{row.password}</th>
                         <th className='f-tbl small'>
                         <Link to={`editOrtu/${row.id}`} className='tombol-edit button is-small is-info mr-2'><AiOutlineEdit /></Link>
                          <button onClick={() => {deleteOrtu (row.id); handleDeleteAlert(); window.location.reload()}} className='button mt-1 text-white is-small bg-danger'><RiDeleteBin6Line /></button>
@@ -225,6 +274,7 @@ const OrangTua = () => {
             <th className='f-tbl small'>Nik Ayah</th>
             <th className='f-tbl small'>Alamat</th>
             <th className='f-tbl small'>No Hp</th>
+            <th className='f-tbl small'>Password</th>
             <th className='f-tbl small'>Action</th>
             </tr>
         </thead>
@@ -240,9 +290,10 @@ const OrangTua = () => {
                     <th className='f-tbl small'>{ortu.nikAyah}</th>
                     <th className='f-tbl small'>{ortu.alamat}</th>
                     <th className='f-tbl small'>{ortu.notlp}</th>
+                    <th className='f-tbl small'>{ortu.password}</th>
                     <th className='f-tbl small'>
                     <Link to={`editOrtu/${ortu.id}`} className='tombol-edit button is-small is-info mr-2'><AiOutlineEdit /></Link>
-                    
+
                             <button onClick={() => {deleteOrtu (ortu.id); handleDeleteAlert()}} className='button mt-1 text-white is-small bg-danger'><RiDeleteBin6Line /></button>
                         </th>
                     </tr>

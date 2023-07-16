@@ -19,6 +19,7 @@ const Imunisasi = () => {
   const [nama, setNama] = useState("")
   const [tglLahir, setTglLahir] = useState("")
   const [ibu, setIbu] = useState("")
+  const [nikIbu, setNikIbu] = useState("")
   const [tglImunisasi, setTglImunisasi] = useState(new Date())
   const [jenisVaksin, setJenisVaksin] = useState("")
   const [usia, setUsia] = useState("")
@@ -53,6 +54,7 @@ const Imunisasi = () => {
             await axios.post('http://localhost:3000/imunisasi', {
                 AnakId,
                 ibu,
+                nikIbu,
                 tglImunisasi,
                 usia,
                 jenisVaksin,
@@ -62,6 +64,7 @@ const Imunisasi = () => {
               setNama("")
               setTglLahir("")
               setIbu("")
+              setNikIbu("")
               setUsia("")
               setJenisVaksin("")
               setKeterangan("")
@@ -87,6 +90,7 @@ const Imunisasi = () => {
         setNama(response.data.data.nama);
         setTglLahir(new Date(response.data.data.tglLahir));
         setIbu(response.data.data.Ortu.namaIbu)
+        setNikIbu(response.data.data.Ortu.nikIbu)
   }
 
   const handlePilih = () => {
@@ -203,6 +207,11 @@ const Imunisasi = () => {
                 <div className="mb-2">
                     <label className="form-label">Nama IBu</label>
                     <input type="text" className="form-control" value={ibu} onChange={(e) => setIbu(e.target.value)}/>
+                </div>
+
+                <div className="mb-2">
+                    <label className="form-label">NIK IBu</label>
+                    <input type="text" className="form-control" value={nikIbu} onChange={(e) => setNikIbu(e.target.value)}/>
                 </div>
                 
                 <div className="mb-2 mt-4">
@@ -443,6 +452,7 @@ const Imunisasi = () => {
               <th className='f-tbl small'>Nama Anak</th>
               <th className='f-tbl small'>Tanggal Lahir</th>
               <th className='f-tbl small'>Nama Ibu</th>
+              <th className='f-tbl small'>NIK Ibu</th>
               <th className='f-tbl small'>Tanggal Imunisasi</th>
               <th className='f-tbl small'>usia</th>
               <th className='f-tbl small'>Jenis Vaksin</th>
@@ -459,6 +469,7 @@ const Imunisasi = () => {
                   <th className='f-tbl small'>{row.Anak.nama}</th>
                   <th className='f-tbl small'>{row.Anak.tglLahir}</th>
                   <th className='f-tbl small'>{row.ibu}</th>
+                  <th className='f-tbl small'>{row.nikIbu}</th>
                   <th className='f-tbl small'>{row.tglImunisasi}</th>
                   <th className='f-tbl small'>{row.usia}</th>
                   <th className='f-tbl small'>{row.jenisVaksin}</th>
@@ -482,6 +493,7 @@ const Imunisasi = () => {
                     <th className='f-tbl small'>Nama Anak</th>
                     <th className='f-tbl small'>Tanggal Lahir</th>
                     <th className='f-tbl small'>Nama Ibu</th>
+                    <th className='f-tbl small'>NIK Ibu</th>
                     <th className='f-tbl small'>Tanggal Imunisasi</th>
                     <th className='f-tbl small'>usia</th>
                     <th className='f-tbl small'>Jenis Vaksin</th>
@@ -498,6 +510,7 @@ const Imunisasi = () => {
                         <th className='f-tbl small'>{imunisasi.Anak.nama}</th>
                         <th className='f-tbl small'>{imunisasi.Anak.tglLahir}</th>
                         <th className='f-tbl small'>{imunisasi.ibu}</th>
+                        <th className='f-tbl small'>{imunisasi.nikIbu}</th>
                         <th className='f-tbl small'>{imunisasi.tglImunisasi}</th>
                         <th className='f-tbl small'>{imunisasi.usia}</th>
                         <th className='f-tbl small'>{imunisasi.jenisVaksin}</th>
